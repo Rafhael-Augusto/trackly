@@ -1,4 +1,4 @@
-import { Tooltip, TooltipContentProps } from "recharts";
+import { TooltipContentProps } from "recharts";
 
 const daysMap = {
   Seg: "Segunda",
