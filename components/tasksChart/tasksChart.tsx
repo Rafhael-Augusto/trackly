@@ -171,12 +171,12 @@ export default function TasksChart() {
 
   return (
     <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
-      <div className="flex text-secondary">
+      <div className="flex text-secondary gap-4">
         <Select
           onValueChange={(value) => handleDataChange(value as Period)}
           value={period}
         >
-          <SelectTrigger className="border-0">
+          <SelectTrigger className="border-0 bg-secondary/5">
             <SelectValue placeholder="Selecione o periodo" />
           </SelectTrigger>
 
@@ -193,7 +193,7 @@ export default function TasksChart() {
           onValueChange={(value) => setLines(value as Lines)}
           value={lines}
         >
-          <SelectTrigger className="border-0">
+          <SelectTrigger className="border-0 bg-secondary/5">
             <SelectValue placeholder="Selecione o dado" />
           </SelectTrigger>
 

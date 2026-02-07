@@ -95,7 +95,7 @@ export default function TimeTrackerChart() {
           onValueChange={(value) => handleDataChange(value as Period)}
           value={period}
         >
-          <SelectTrigger className="border-0">
+          <SelectTrigger className="border-0 bg-secondary/5">
             <SelectValue placeholder="Selecione o periodo" />
           </SelectTrigger>
 

@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primary/95`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primary/95 text-secondary`}
       >
         <div className="flex">
           <div className="sticky top-0 h-screen">
