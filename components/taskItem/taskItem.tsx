@@ -17,7 +17,7 @@ export default function TaskItem({ data }: Props) {
         <data.icon />
       </div>
       <div>
-        <Link href="/#" className="font-bold text-lg">
+        <Link href="/#" className="font-bold ">
           {data.title}
         </Link>
         <p className="text-sm text-secondary/50">{data.description}</p>

@@ -15,7 +15,7 @@ export default function SidebarItem({ data }: Props) {
       className="flex items-center gap-2 h-full hover:bg-secondary hover:text-primary p-1 rounded-md"
     >
       <data.icon />
-      <p className="text-lg font-bold p-0!">{data.label}</p>
+      <p className="text-lg p-0!">{data.label}</p>
     </Link>
   );
 }

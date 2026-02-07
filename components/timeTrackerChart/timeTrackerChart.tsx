@@ -1,9 +1,26 @@
 "use client";
 
-import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
-import { TimeTrackerTooltip } from "../customTooltip/timeTrackerTooltip";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { CustomToolTip } from "../customTooltip/customTooltip";
+import { useEffect, useState } from "react";
 
-const data = [
+const dataWeekly = [
   { day: "Segunda", hours: 1, minutes: 31, seconds: 2 },
   { day: "Terca", hours: 2, minutes: 15, seconds: 30 },
   { day: "Quarta", hours: 0, minutes: 45, seconds: 0 },
@@ -13,22 +30,93 @@ const data = [
   { day: "Domingo", hours: 0, minutes: 55, seconds: 38 },
 ];
 
+const dataMonthly = [
+  {
+    month: "Janeiro",
+    hours: 30,
+    minutes: 31,
+    seconds: 2,
+  },
+  {
+    month: "Fevereiro",
+    hours: 15,
+    minutes: 3,
+    seconds: 2,
+  },
+];
+
+type Period = "weekly" | "monthly";
+
+type Data = (typeof dataWeekly)[number] | (typeof dataMonthly)[number];
+type UpdatedData = {
+  label?: string;
+  horas?: number;
+};
+
 export default function TimeTrackerChart() {
-  const charData = data.map((item) => ({
-    day: item.day.slice(0, 3),
-    totalMinutes: Math.floor(
-      item.hours * 60 + item.minutes + item.seconds / 60,
-    ),
-  }));
+  const [period, setPeriod] = useState("weekly");
+
+  const [data, setData] = useState<Data[]>(dataWeekly);
+  const [updatedData, setUpdatedData] = useState<UpdatedData[]>();
+
+  const newChartData = (data: Data[]): UpdatedData[] => {
+    const newDataArray = data.map((item) => {
+      const label = "day" in item ? item.day : item.month;
+
+      return {
+        label: label,
+        horas: +(item.hours + item.minutes / 60 + item.seconds / 3600).toFixed(
+          2,
+        ),
+      };
+    });
+
+    return newDataArray;
+  };
+
+  const handleDataChange = (value: Period) => {
+    const dataMap = {
+      monthly: dataMonthly,
+      weekly: dataWeekly,
+    };
+
+    setData(dataMap[value]);
+    setPeriod(value);
+  };
+
+  useEffect(() => {
+    setUpdatedData(newChartData(data));
+  }, [period]);
 
   return (
-    <div className="bg-primary rounded-xl pr-4 pt-4 h-1/2">
-      <LineChart responsive data={charData} className="w-full h-full">
-        <Line type="monotone" dataKey="totalMinutes" />
-        <Tooltip content={TimeTrackerTooltip} />
-        <XAxis dataKey="day" />
-        <YAxis label={{ value: "min", position: "insideLeft", angle: -90 }} />
-      </LineChart>
+    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
+      <div className="text-secondary">
+        <Select
+          onValueChange={(value) => handleDataChange(value as Period)}
+          value={period}
+        >
+          <SelectTrigger className="border-0">
+            <SelectValue placeholder="Selecione o periodo" />
+          </SelectTrigger>
+
+          <SelectContent className="bg-primary text-secondary border-0">
+            <SelectGroup>
+              <SelectLabel>Periodo</SelectLabel>
+              <SelectItem value="weekly">Semanal</SelectItem>
+              <SelectItem value="monthly">Mensal</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <ResponsiveContainer height={"100%"} width={"100%"}>
+        <LineChart data={updatedData} className="w-full h-full">
+          <Line type="monotone" dataKey="horas" />
+          <Tooltip content={CustomToolTip} />
+          <XAxis dataKey="label" />
+          <YAxis label={{ value: "min", position: "insideLeft", angle: -90 }} />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

@@ -1,9 +1,27 @@
 "use client";
 
-import { Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
-import { TasksTooltip } from "../customTooltip/tasksTooltip";
+import {
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useEffect, useState } from "react";
+import { CustomToolTip } from "../customTooltip/customTooltip";
 
-const data = [
+const dataWeekly = [
   {
     day: "Segunda",
     tasksCreated: 5,
@@ -55,29 +73,157 @@ const data = [
   },
 ];
 
+const dataMonthly = [
+  {
+    month: "Janeiro",
+    tasksCreated: 30,
+    tasksDone: 20,
+    tasksStarted: 23,
+    tasksPending: 10,
+  },
+  {
+    month: "Fevereiro",
+    tasksCreated: 0,
+    tasksDone: 10,
+    tasksStarted: 7,
+    tasksPending: 0,
+  },
+];
+
+type Period = "weekly" | "monthly";
+type Lines = "all" | "created" | "done" | "pending" | "started";
+
+type Data = (typeof dataWeekly)[number] | (typeof dataMonthly)[number];
+type UpdatedData = {
+  label?: string;
+  "Tarefas Criadas"?: number;
+  "Tarefas Concluidas"?: number;
+  "Tarefas Pendentes"?: number;
+  "Tarefas Iniciadas"?: number;
+};
+
 export default function TasksChart() {
-  const charData = data.map((item) => ({
-    day: item.day,
-    "Tarefas Criadas": item.tasksCreated,
-    "Tarefas Concluidas": item.tasksDone,
-    "Tarefas Pendentes": item.tasksStarted,
-    "Tarefas Iniciadas": item.tasksPending,
-  }));
+  const [period, setPeriod] = useState<Period>("weekly");
+  const [lines, setLines] = useState<Lines>("done");
+
+  const [data, setData] = useState<Data[]>(dataWeekly);
+  const [updatedData, setUpdatedData] = useState<UpdatedData[]>();
+
+  const handleDataChange = (value: Period) => {
+    const dataMap = {
+      monthly: dataMonthly,
+      weekly: dataWeekly,
+    };
+
+    setData(dataMap[value]);
+    setPeriod(value);
+  };
+
+  const modifyData = (value: Lines): UpdatedData[] => {
+    const newData = newChartData(data);
+
+    const modifyDataMap = {
+      all: newData,
+      created: newData.map((item) => ({
+        label: item.label,
+        "Tarefas Criadas": item["Tarefas Criadas"],
+      })),
+      done: newData.map((item) => ({
+        label: item.label,
+        "Tarefas Concluidas": item["Tarefas Concluidas"],
+      })),
+      pending: newData.map((item) => ({
+        label: item.label,
+        "Tarefas Pendentes": item["Tarefas Pendentes"],
+      })),
+      started: newData.map((item) => ({
+        label: item.label,
+        "Tarefas Iniciadas": item["Tarefas Iniciadas"],
+      })),
+    };
+
+    return modifyDataMap[value];
+  };
+
+  const newChartData = (data: Data[]): UpdatedData[] => {
+    const newDataArray = data.map((item) => {
+      const label = "day" in item ? item.day : item.month;
+
+      return {
+        label: label,
+        "Tarefas Criadas": item.tasksCreated,
+        "Tarefas Concluidas": item.tasksDone,
+        "Tarefas Pendentes": item.tasksPending,
+        "Tarefas Iniciadas": item.tasksStarted,
+      };
+    });
+
+    return newDataArray;
+  };
+
+  useEffect(() => {
+    setUpdatedData(newChartData(data));
+  }, [period]);
+
+  useEffect(() => {
+    setUpdatedData(modifyData(lines));
+  }, [lines, period]);
 
   return (
-    <div className="bg-primary rounded-xl pr-4 pt-4 h-1/2">
-      <LineChart responsive data={charData} className="w-full h-full">
-        <Line type="monotone" dataKey="Tarefas Criadas" stroke="#3b82f6" />
-        <Line type="monotone" dataKey="Tarefas Concluidas" stroke="#22c55e" />
-        <Line type="monotone" dataKey="Tarefas Pendentes" stroke="#f59e0b" />
-        <Line type="monotone" dataKey="Tarefas Iniciadas" stroke="#ef4444" />
-        <Legend align="center" />
-        <Tooltip content={TasksTooltip} />
-        <XAxis dataKey="day" />
-        <YAxis
-          label={{ value: "Tarefas", position: "insideLeft", angle: -90 }}
-        />
-      </LineChart>
+    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
+      <div className="flex text-secondary">
+        <Select
+          onValueChange={(value) => handleDataChange(value as Period)}
+          value={period}
+        >
+          <SelectTrigger className="border-0">
+            <SelectValue placeholder="Selecione o periodo" />
+          </SelectTrigger>
+
+          <SelectContent className="bg-primary text-secondary border-0">
+            <SelectGroup>
+              <SelectLabel>Periodo</SelectLabel>
+              <SelectItem value="weekly">Semanal</SelectItem>
+              <SelectItem value="monthly">Mensal</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select
+          onValueChange={(value) => setLines(value as Lines)}
+          value={lines}
+        >
+          <SelectTrigger className="border-0">
+            <SelectValue placeholder="Selecione o dado" />
+          </SelectTrigger>
+
+          <SelectContent className="bg-primary text-secondary border-0">
+            <SelectGroup>
+              <SelectLabel>Linhas</SelectLabel>
+              <SelectItem value="all">Todas as tarefas</SelectItem>
+              <SelectItem value="created">Tarefas Criadas</SelectItem>
+              <SelectItem value="done">Tarefas Concluidas</SelectItem>
+              <SelectItem value="pending">Tarefas Pendentes</SelectItem>
+              <SelectItem value="started">Tarefas Iniciadas</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <ResponsiveContainer height={"100%"} width={"100%"}>
+        <LineChart data={updatedData} className="w-full h-full">
+          <Line type="monotone" dataKey="Tarefas Criadas" stroke="#3b82f6" />
+          <Line type="monotone" dataKey="Tarefas Concluidas" stroke="#22c55e" />
+          <Line type="monotone" dataKey="Tarefas Pendentes" stroke="#f59e0b" />
+          <Line type="monotone" dataKey="Tarefas Iniciadas" stroke="#ef4444" />
+          <Legend align="center" />
+          <Tooltip content={CustomToolTip} />
+          <XAxis dataKey="label" />
+          <YAxis
+            label={{ value: "Tarefas", position: "insideLeft", angle: -90 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

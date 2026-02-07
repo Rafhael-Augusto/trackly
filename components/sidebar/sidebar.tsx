@@ -41,19 +41,19 @@ export default function Sidebar() {
       onMouseEnter={() => toggleSidebar()}
       onMouseLeave={() => toggleSidebar()}
       className={cn(
-        "bg-primary text-secondary overflow-hidden transition-all h-full",
+        "bg-primary text-secondary overflow-hidden transition-all  h-full",
         isOpen ? "w-72" : "w-2",
       )}
     >
       <div className="text-start py-4 mx-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mt-8 mb-20">
           <CheckCheckIcon size={40} className="text-green-600" />
-          <Link href={"/"} className="text-4xl my-8">
+          <Link href={"/"} className="text-4xl">
             TRACKLY
           </Link>
         </div>
 
-        <h2 className="text-lg mb-2">Menu</h2>
+        <h2 className="text-lg mb-8">Menu</h2>
 
         <ul className="flex flex-col gap-2 items-start">
           {buttonsList.map((item) => (
