@@ -18,7 +18,7 @@ import {
   YAxis,
 } from "recharts";
 import { CustomToolTip } from "../customTooltip/customTooltip";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const dataWeekly = [
   { day: "Segunda", hours: 1, minutes: 31, seconds: 2 },
@@ -57,7 +57,6 @@ export default function TimeTrackerChart() {
   const [period, setPeriod] = useState("weekly");
 
   const [data, setData] = useState<Data[]>(dataWeekly);
-  const [updatedData, setUpdatedData] = useState<UpdatedData[]>();
 
   const newChartData = (data: Data[]): UpdatedData[] => {
     const newDataArray = data.map((item) => {
@@ -84,9 +83,9 @@ export default function TimeTrackerChart() {
     setPeriod(value);
   };
 
-  useEffect(() => {
-    setUpdatedData(newChartData(data));
-  }, [period]);
+  const updatedData = useMemo(() => {
+    return newChartData(data);
+  }, [data, period]);
 
   return (
     <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">

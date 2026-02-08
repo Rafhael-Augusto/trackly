@@ -11,7 +11,7 @@ export const CustomToolTip = ({
     <div className="bg-secondary/5 p-4 rounded-md">
       <p className="text-secondary">{label}</p>
 
-      {payload.map((item, index) => (
+      {payload.map((item) => (
         <p key={item.name} className="font-bold text-secondary">
           {item.value} {item.name}
         </p>

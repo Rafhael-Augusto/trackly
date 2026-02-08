@@ -14,7 +14,9 @@ export function useStopwatch() {
     }
 
     return () => {
-      if (intervalRef.current) [clearInterval(intervalRef.current)];
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, [isRunning]);
 

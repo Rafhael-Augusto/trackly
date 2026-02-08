@@ -1,6 +1,5 @@
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
 
 type Props = {
   data: {

@@ -9,7 +9,11 @@ export default function StopWatch() {
     useStopwatch();
 
   const handleClick = () => {
-    isRunning ? pause() : start();
+    if (isRunning) {
+      pause();
+    } else {
+      start();
+    }
   };
 
   const formatTime = (value: number) => {

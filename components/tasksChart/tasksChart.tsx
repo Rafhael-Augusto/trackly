@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CustomToolTip } from "../customTooltip/customTooltip";
 
 const dataWeekly = [
@@ -107,7 +107,6 @@ export default function TasksChart() {
   const [lines, setLines] = useState<Lines>("done");
 
   const [data, setData] = useState<Data[]>(dataWeekly);
-  const [updatedData, setUpdatedData] = useState<UpdatedData[]>();
 
   const handleDataChange = (value: Period) => {
     const dataMap = {
@@ -119,24 +118,22 @@ export default function TasksChart() {
     setPeriod(value);
   };
 
-  const modifyData = (value: Lines): UpdatedData[] => {
-    const newData = newChartData(data);
-
+  const modifyData = (baseData: UpdatedData[], value: Lines): UpdatedData[] => {
     const modifyDataMap = {
-      all: newData,
-      created: newData.map((item) => ({
+      all: baseData,
+      created: baseData.map((item) => ({
         label: item.label,
         "Tarefas Criadas": item["Tarefas Criadas"],
       })),
-      done: newData.map((item) => ({
+      done: baseData.map((item) => ({
         label: item.label,
         "Tarefas Concluidas": item["Tarefas Concluidas"],
       })),
-      pending: newData.map((item) => ({
+      pending: baseData.map((item) => ({
         label: item.label,
         "Tarefas Pendentes": item["Tarefas Pendentes"],
       })),
-      started: newData.map((item) => ({
+      started: baseData.map((item) => ({
         label: item.label,
         "Tarefas Iniciadas": item["Tarefas Iniciadas"],
       })),
@@ -161,13 +158,10 @@ export default function TasksChart() {
     return newDataArray;
   };
 
-  useEffect(() => {
-    setUpdatedData(newChartData(data));
-  }, [period]);
-
-  useEffect(() => {
-    setUpdatedData(modifyData(lines));
-  }, [lines, period]);
+  const updatedData = useMemo(() => {
+    const baseData = newChartData(data);
+    return modifyData(baseData, lines);
+  }, [data, period, lines]);
 
   return (
     <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
