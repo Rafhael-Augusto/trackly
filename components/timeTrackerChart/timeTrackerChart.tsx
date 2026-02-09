@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import {
   Select,
   SelectContent,
@@ -18,7 +20,6 @@ import {
   YAxis,
 } from "recharts";
 import { CustomToolTip } from "../customTooltip/customTooltip";
-import { useEffect, useMemo, useState } from "react";
 
 const dataWeekly = [
   { day: "Segunda", hours: 1, minutes: 31, seconds: 2 },
@@ -85,7 +86,7 @@ export default function TimeTrackerChart() {
 
   const updatedData = useMemo(() => {
     return newChartData(data);
-  }, [data, period]);
+  }, [data]);
 
   return (
     <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">

@@ -28,14 +28,19 @@ export default function StopWatch() {
         <span>{formatTime(seconds)}</span>
       </div>
 
-      <ButtonGroup>
-        <Button variant={"secondary"} onClick={() => handleClick()}>
-          {isRunning ? "Pausar" : "Iniciar"}
-        </Button>
-        <Button variant={"secondary"} onClick={() => reset()}>
-          Reiniciar
-        </Button>
-      </ButtonGroup>
+      <div className="flex flex-col items-center gap-4">
+        <ButtonGroup>
+          {seconds > 0 && !isRunning && (
+            <Button variant={"secondary"}>Registrar</Button>
+          )}
+          <Button variant={"secondary"} onClick={() => handleClick()}>
+            {isRunning ? "Pausar" : "Iniciar"}
+          </Button>
+          <Button variant={"secondary"} onClick={() => reset()}>
+            Reiniciar
+          </Button>
+        </ButtonGroup>
+      </div>
     </div>
   );
 }

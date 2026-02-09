@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
 import {
   Legend,
   Line,
@@ -18,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect, useMemo, useState } from "react";
+
 import { CustomToolTip } from "../customTooltip/customTooltip";
 
 const dataWeekly = [
@@ -161,7 +163,7 @@ export default function TasksChart() {
   const updatedData = useMemo(() => {
     const baseData = newChartData(data);
     return modifyData(baseData, lines);
-  }, [data, period, lines]);
+  }, [data, lines]);
 
   return (
     <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
