@@ -33,7 +33,7 @@ const data = [
 
 export default function MetricCardList() {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4 ">
       {data.map((item) => (
         <MetricCard key={item.id} data={item} />
       ))}

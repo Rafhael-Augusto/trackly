@@ -89,7 +89,7 @@ export default function TimeTrackerChart() {
   }, [data]);
 
   return (
-    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
+    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 w-full h-80">
       <div className="text-secondary">
         <Select
           onValueChange={(value) => handleDataChange(value as Period)}

@@ -189,7 +189,7 @@ export default function TasksChart() {
   }, [data, lines]);
 
   return (
-    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 h-1/2 w-full">
+    <div className="flex flex-col items-end bg-primary rounded-xl pr-4 pt-4 w-full h-80">
       <div className="flex text-secondary gap-4">
         <Select
           onValueChange={(value) => handleDataChange(value as Period)}
