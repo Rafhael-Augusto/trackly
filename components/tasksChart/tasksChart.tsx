@@ -92,6 +92,29 @@ const dataMonthly = [
   },
 ];
 
+const chartMap = [
+  {
+    label: "created",
+    value: "Tarefas Criadas",
+    stroke: "#3b82f6",
+  },
+  {
+    label: "done",
+    value: "Tarefas Concluidas",
+    stroke: "#22c55e",
+  },
+  {
+    label: "pending",
+    value: "Tarefas Pendentes",
+    stroke: "#f59e0b",
+  },
+  {
+    label: "started",
+    value: "Tarefas Iniciadas",
+    stroke: "#ef4444",
+  },
+];
+
 type Period = "weekly" | "monthly";
 type Lines = "all" | "created" | "done" | "pending" | "started";
 
@@ -208,10 +231,18 @@ export default function TasksChart() {
 
       <ResponsiveContainer height={"100%"} width={"100%"}>
         <LineChart data={updatedData} className="w-full h-full">
-          <Line type="monotone" dataKey="Tarefas Criadas" stroke="#3b82f6" />
-          <Line type="monotone" dataKey="Tarefas Concluidas" stroke="#22c55e" />
-          <Line type="monotone" dataKey="Tarefas Pendentes" stroke="#f59e0b" />
-          <Line type="monotone" dataKey="Tarefas Iniciadas" stroke="#ef4444" />
+          {chartMap.map((item) => {
+            if (lines === "all" || lines === item.label) {
+              return (
+                <Line
+                  key={item.label}
+                  type="monotone"
+                  dataKey={item.value}
+                  stroke={item.stroke}
+                />
+              );
+            }
+          })}
           <Legend align="center" />
           <Tooltip content={CustomToolTip} />
           <XAxis dataKey="label" />
