@@ -13,7 +13,7 @@ import TaskForm from "@/components/taskForm/taskForm";
 export default function Tasks() {
   return (
     <div>
-      <TaskForm />
+      <h1>tasks page</h1>
     </div>
   );
 }
