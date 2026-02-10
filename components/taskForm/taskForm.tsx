@@ -57,8 +57,8 @@ export default function TaskForm({ isOpen, setIsOpen }: Props) {
     <Sheet open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
       <div
         className={cn(
-          "backdrop-blur-xs h-screen w-screen top-0 left-0 z-0",
-          isOpen ? "absolute" : "hidden",
+          "backdrop-blur-xs bg-black/50 h-screen w-screen top-0 left-0 z-0",
+          isOpen ? "fixed" : "hidden",
         )}
       />
       <SheetContent className="bg-primary border-0 z-10">
