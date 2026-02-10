@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Reminder from "@/components/reminder/reminder";
 import Sidebar from "@/components/sidebar/sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,9 @@ export default function RootLayout({
           <div className="sticky top-0 h-screen">
             <Sidebar />
           </div>
-          <div className="w-full p-4">{children}</div>
+          <TooltipProvider>
+            <div className="w-full p-4">{children}</div>
+          </TooltipProvider>
         </div>
 
         <Toaster />

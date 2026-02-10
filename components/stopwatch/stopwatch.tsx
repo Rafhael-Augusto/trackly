@@ -30,9 +30,6 @@ export default function StopWatch() {
 
       <div className="flex flex-col items-center gap-4">
         <ButtonGroup>
-          {seconds > 0 && !isRunning && (
-            <Button variant={"secondary"}>Registrar</Button>
-          )}
           <Button variant={"secondary"} onClick={() => handleClick()}>
             {isRunning ? "Pausar" : "Iniciar"}
           </Button>
@@ -40,6 +37,10 @@ export default function StopWatch() {
             Reiniciar
           </Button>
         </ButtonGroup>
+
+        {seconds > 0 && !isRunning && (
+          <Button variant={"secondary"}>Registrar</Button>
+        )}
       </div>
     </div>
   );

@@ -15,8 +15,6 @@ type Props = {
 export default function SidebarItem({ data }: Props) {
   const pathname = usePathname();
 
-  console.log(pathname);
-
   return (
     <Link
       href={data.page}

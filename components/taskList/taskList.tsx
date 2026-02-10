@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import TaskItem from "../taskItem/taskItem";
 import {
@@ -7,6 +11,7 @@ import {
   ShowerHeadIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import TaskForm from "../taskForm/taskForm";
 
 const tasksList = [
   {
@@ -42,22 +47,30 @@ const tasksList = [
 ];
 
 export default function TaskList() {
-  return (
-    <Card className="px-5">
-      <CardHeader className="p-0">
-        <CardTitle className="flex items-center justify-between">
-          <p>Tarefas</p>
-          <Button variant={"secondary"}>Criar Tarefa</Button>
-        </CardTitle>
-      </CardHeader>
+  const [isOpen, setIsOpen] = useState(false);
 
-      <CardContent className="bg-secondary p-0 rounded-2xl">
-        <div className="bg-primary/95 flex flex-col gap-4 py-2 overflow-y-scroll max-h-72">
-          {tasksList.map((item) => (
-            <TaskItem key={item.id} data={item} />
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+  return (
+    <div>
+      <Card className="px-5">
+        <CardHeader className="p-0">
+          <CardTitle className="flex items-center justify-between">
+            <p>Tarefas</p>
+            <Button onClick={() => setIsOpen(true)} variant={"secondary"}>
+              Criar Tarefa
+            </Button>
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="bg-secondary p-0 rounded-2xl">
+          <div className="bg-primary/95 flex flex-col gap-4 py-2 overflow-y-scroll max-h-72">
+            {tasksList.map((item) => (
+              <TaskItem key={item.id} data={item} />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <TaskForm isOpen={isOpen} setIsOpen={setIsOpen} />
+    </div>
   );
 }
