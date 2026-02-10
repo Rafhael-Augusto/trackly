@@ -3,7 +3,6 @@ import {
   BookAIcon,
   BrushCleaningIcon,
   CalculatorIcon,
-  CircleQuestionMarkIcon,
   ClipboardListIcon,
   NotebookTextIcon,
   PackageIcon,

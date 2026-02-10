@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import SidebarButton from "../sidebarItem/sidebarItem";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
 const buttonsList = [
   {
@@ -55,45 +56,47 @@ const otherButtons = [
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen((prev) => !prev);
-  };
-
   return (
     <div
-      onMouseEnter={() => toggleSidebar()}
-      onMouseLeave={() => toggleSidebar()}
-      className={cn(
-        "bg-primary text-secondary overflow-hidden transition-all  h-full",
-        isOpen ? "w-72" : "w-2",
-      )}
+      onMouseEnter={() => setIsOpen(true)}
+      className="overflow-hidden transition-all  h-full w-2"
     >
-      <div className="text-start mx-4">
-        <div className="flex items-center gap-1 my-4">
-          <CheckCheckIcon size={30} className="text-green-600" />
-          <Link href={"/"} className="text-2xl">
-            Trackly
-          </Link>
-        </div>
+      <Sheet open={isOpen}>
+        <SheetContent
+          side="left"
+          onMouseLeave={() => setIsOpen(false)}
+          className="bg-primary text-secondary border-0"
+        >
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-1 my-4">
+              <CheckCheckIcon size={30} className="text-green-600" />
+              <Link href={"/"} className="text-2xl text-secondary">
+                Trackly
+              </Link>
+            </SheetTitle>
+          </SheetHeader>
 
-        <ul className="flex flex-col gap-2 items-start">
-          {buttonsList.map((item) => (
-            <li key={item.id} className="w-full">
-              <SidebarButton data={item} />
-            </li>
-          ))}
-        </ul>
+          <div className="text-start mx-4">
+            <ul className="flex flex-col gap-2 items-start">
+              {buttonsList.map((item) => (
+                <li key={item.id} className="w-full">
+                  <SidebarButton data={item} />
+                </li>
+              ))}
+            </ul>
 
-        <p className="mt-12 text-secondary/50">Outros</p>
+            <p className="mt-12 text-secondary/50">Outros</p>
 
-        <ul className="flex flex-col gap-2 items-start">
-          {otherButtons.map((item) => (
-            <li key={item.id} className="w-full">
-              <SidebarButton data={item} />
-            </li>
-          ))}
-        </ul>
-      </div>
+            <ul className="flex flex-col gap-2 items-start">
+              {otherButtons.map((item) => (
+                <li key={item.id} className="w-full">
+                  <SidebarButton data={item} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
