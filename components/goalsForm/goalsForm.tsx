@@ -10,8 +10,8 @@ import { FormData, formSchema } from "./schema";
 
 import { CalendarIcon } from "lucide-react";
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { Calendar } from "../ui/calendar";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -43,21 +43,16 @@ export default function GoalsForm({ isOpen, setIsOpen }: Props) {
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
       <div
         className={cn(
           "backdrop-blur-xs bg-black/50 h-screen w-screen top-0 left-0 z-0",
           isOpen ? "fixed" : "hidden",
         )}
       />
-      <SheetContent className="bg-primary border-0 z-10">
-        <SheetHeader>
-          <SheetTitle className="text-secondary">Criar nova meta</SheetTitle>
-        </SheetHeader>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-primary p-4 rounded-xl"
-        >
+      <form>
+        <DialogContent className="bg-primary border-0 text-secondary">
+          <DialogTitle>Criar nova meta</DialogTitle>
           <FieldSet>
             <FieldGroup className="flex-row ">
               <Field>
@@ -129,8 +124,8 @@ export default function GoalsForm({ isOpen, setIsOpen }: Props) {
               </Button>
             </Field>
           </FieldSet>
-        </form>
-      </SheetContent>
-    </Sheet>
+        </DialogContent>
+      </form>
+    </Dialog>
   );
 }
