@@ -13,7 +13,8 @@ export default function Reminder() {
       audio.play();
       toast.info("Seu lembrete: ", {
         description: reminderDescription,
-        position: "top-center",
+        position: "bottom-right",
+        className: "text-secondary!",
       });
     };
 

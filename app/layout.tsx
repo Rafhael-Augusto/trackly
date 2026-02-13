@@ -40,7 +40,15 @@ export default function RootLayout({
           </TooltipProvider>
         </div>
 
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            classNames: {
+              toast: "bg-primary!",
+              title: "text-secondary!",
+              description: "text-secondary/70!",
+            },
+          }}
+        />
         <Reminder />
       </body>
     </html>
