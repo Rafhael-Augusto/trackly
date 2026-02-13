@@ -1,9 +1,12 @@
 "use client";
 
+import { TasksFilter, TasksPriorityList } from "@/components/tasks";
+
 export default function Tasks() {
   return (
     <div>
-      <h1>tasks page</h1>
+      <TasksPriorityList />
+      <TasksFilter />
     </div>
   );
 }

@@ -1,0 +1,8 @@
+export { TaskForm } from "@/components/tasks/taskForm/taskForm";
+export { TaskItem } from "@/components/tasks/taskItem/taskItem";
+export { TaskItemList } from "@/components/tasks/taskItemList/taskItemList";
+export { TaskList } from "@/components/tasks/taskList/taskList";
+export { TasksChart } from "@/components/tasks/tasksChart/tasksChart";
+export { TasksFilter } from "@/components/tasks/tasksFilter/tasksFilter";
+export { TasksPriorityItem } from "@/components/tasks/tasksPriorityItem/tasksPriorityItem";
+export { TasksPriorityList } from "@/components/tasks/tasksPriorityList/tasksPriorityList";

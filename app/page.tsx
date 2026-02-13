@@ -1,9 +1,7 @@
-import GoalsList from "@/components/goalsList/goalsList";
-import MetricCardList from "@/components/metricCardList/metricCardList";
-import TaskList from "@/components/taskList/taskList";
-import TasksChart from "@/components/tasksChart/tasksChart";
-import TimeTracker from "@/components/timeTracker/timeTracker";
-import TimeTrackerChart from "@/components/timeTrackerChart/timeTrackerChart";
+import { GoalsList } from "@/components/goals";
+import { MetricCardList } from "@/components/metric";
+import { TaskList, TasksChart } from "@/components/tasks";
+import { TimeTracker, TimeTrackerChart } from "@/components/timeTracker";
 
 export default function Home() {
   return (
