@@ -1,19 +1,25 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-
 import { useState } from "react";
+
+import { cn } from "@/lib/utils";
 
 import {
   BookAIcon,
   CalculatorIcon,
   FolderClosedIcon,
+  SearchIcon,
   ShowerHeadIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+
 import { TaskItemList, TaskForm } from "@/components/tasks";
 
 const tasksList = [
@@ -86,7 +92,12 @@ export function TaskList({ filters }: Props) {
     <div>
       <Card className="px-5">
         <CardHeader className="p-0">
-          <CardTitle className="flex items-center justify-between">
+          <CardTitle
+            className={cn(
+              "flex items-center justify-between",
+              filters && "justify-start gap-8",
+            )}
+          >
             <p>Tarefas</p>
             <Button onClick={() => setIsOpen(true)} variant={"secondary"}>
               Criar Tarefa
@@ -94,8 +105,8 @@ export function TaskList({ filters }: Props) {
           </CardTitle>
 
           {filters && (
-            <div>
-              <ul>
+            <div className="flex items-center justify-between mt-4">
+              <ul className="flex items-center gap-8">
                 {buttonsList.map((item) => (
                   <li
                     key={item.id}
@@ -113,6 +124,14 @@ export function TaskList({ filters }: Props) {
                   </li>
                 ))}
               </ul>
+
+              <InputGroup className="w-1/5 bg-secondary/5 border-0">
+                <InputGroupInput type="search" placeholder="Pesquisar..." />
+
+                <InputGroupAddon align="inline-end">
+                  <SearchIcon />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
           )}
         </CardHeader>
