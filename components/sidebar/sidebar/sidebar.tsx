@@ -34,12 +34,7 @@ const buttonsList = [
     page: "/tasks",
     id: 1,
   },
-  {
-    label: "Timer",
-    icon: ClockIcon,
-    page: "/stopwatch",
-    id: 2,
-  },
+
   {
     label: "Metas",
     page: "/goals",
@@ -50,7 +45,13 @@ const buttonsList = [
 
 const otherButtons = [
   {
-    label: "Configuracoes",
+    label: "Timer",
+    icon: ClockIcon,
+    page: "/stopwatch",
+    id: 2,
+  },
+  {
+    label: "Config",
     icon: SettingsIcon,
     page: "/settings",
     id: 4,
