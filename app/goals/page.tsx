@@ -1,7 +1,11 @@
+import { GoalsList, GoalsTable } from "@/components/goals";
+
 export default function Goals() {
   return (
-    <div>
-      <h1>Goals page</h1>
+    <div className="grid grid-cols-4">
+      <div className="col-span-3">
+        <GoalsList />
+      </div>
     </div>
   );
 }

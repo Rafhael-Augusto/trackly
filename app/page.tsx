@@ -18,7 +18,6 @@ export default function Home() {
 
         <div className="col-start-4 flex flex-col gap-4">
           <TaskList />
-          <TimeTracker />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import {
+  BellIcon,
   CheckCheckIcon,
   ClipboardListIcon,
   ClockIcon,
@@ -39,22 +40,29 @@ const buttonsList = [
     label: "Metas",
     page: "/goals",
     icon: GoalIcon,
-    id: 3,
+    id: 2,
   },
 ];
 
 const otherButtons = [
   {
+    label: "Alerta",
+    icon: BellIcon,
+    page: "/notification",
+    id: 3,
+  },
+  {
     label: "Timer",
     icon: ClockIcon,
     page: "/stopwatch",
-    id: 2,
+    id: 4,
   },
+
   {
     label: "Config",
     icon: SettingsIcon,
     page: "/settings",
-    id: 4,
+    id: 5,
   },
 ];
 

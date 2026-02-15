@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function TimeTracker({ draggable }: Props) {
-  const { isOpen } = useTimeTrackerContext();
+  const { isOpen, setIsOpen } = useTimeTrackerContext();
 
   return (
     <div>
@@ -23,7 +23,7 @@ export function TimeTracker({ draggable }: Props) {
             <CardTitle>Time Tracker</CardTitle>
 
             {draggable && (
-              <Button className="p-0!">
+              <Button className="p-0!" onClick={() => setIsOpen(false)}>
                 <XIcon className="size-6" />
               </Button>
             )}

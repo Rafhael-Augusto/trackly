@@ -1,7 +1,9 @@
+import { ThemeSwitch } from "@/components/settings";
+
 export default function Settings() {
   return (
     <div>
-      <h1>Settings page</h1>
+      <ThemeSwitch />
     </div>
   );
 }

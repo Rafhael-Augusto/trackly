@@ -7,7 +7,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Sidebar } from "@/components/sidebar";
-import { DraggableWrapper, Reminder } from "@/components/misc";
+import { DraggableWrapper, Reminder, ThemeProvider } from "@/components/misc";
 import { TimeTracker, TimeTrackerProvider } from "@/components/timeTracker";
 
 const geistSans = Geist({
@@ -33,37 +33,45 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primary/95 text-secondary`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-secondary`}
       >
-        <div className="flex">
-          <div className="sticky top-0 h-screen">
-            <Sidebar />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex bg-primary/95">
+            <div className="sticky top-0 h-screen">
+              <Sidebar />
+            </div>
+
+            <TooltipProvider>
+              <TimeTrackerProvider>
+                <div className="w-full p-4 ">{children}</div>
+                <div className="fixed top-0 right-0 h-screen w-screen pointer-events-none">
+                  <DraggableWrapper>
+                    <div className="pointer-events-auto">
+                      <TimeTracker draggable />
+                    </div>
+                  </DraggableWrapper>
+                </div>
+              </TimeTrackerProvider>
+            </TooltipProvider>
           </div>
-          <TooltipProvider>
-            <TimeTrackerProvider>
-              <div className="w-full p-4 ">{children}</div>
-              <div className="fixed top-0 right-0 h-screen w-screen pointer-events-none">
-                <DraggableWrapper>
-                  <div className="pointer-events-auto">
-                    <TimeTracker draggable />
-                  </div>
-                </DraggableWrapper>
-              </div>
-            </TimeTrackerProvider>
-          </TooltipProvider>
-        </div>
 
-        <Toaster
-          toastOptions={{
-            classNames: {
-              toast: "bg-primary!",
-              title: "text-secondary!",
-              description: "text-secondary/70!",
-            },
-          }}
-        />
+          <Toaster
+            toastOptions={{
+              classNames: {
+                toast: "bg-primary!",
+                title: "text-secondary!",
+                description: "text-secondary/70!",
+              },
+            }}
+          />
 
-        <Reminder />
+          <Reminder />
+        </ThemeProvider>
       </body>
     </html>
   );
