@@ -1,5 +1,7 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { StopWatch } from "@/components/timeTracker";
+import { StopWatch, useTimeTrackerContext } from "@/components/timeTracker";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,23 +11,29 @@ type Props = {
 };
 
 export function TimeTracker({ draggable }: Props) {
+  const { isOpen } = useTimeTrackerContext();
+
   return (
-    <Card className={cn(draggable && "border-2")}>
-      <CardHeader
-        className={cn(draggable && "flex items-center justify-between")}
-      >
-        <CardTitle>Time Tracker</CardTitle>
+    <div>
+      {isOpen && (
+        <Card className={cn(draggable && "border-2")}>
+          <CardHeader
+            className={cn(draggable && "flex items-center justify-between")}
+          >
+            <CardTitle>Time Tracker</CardTitle>
 
-        {draggable && (
-          <Button className="p-0!">
-            <XIcon className="size-6" />
-          </Button>
-        )}
-      </CardHeader>
+            {draggable && (
+              <Button className="p-0!">
+                <XIcon className="size-6" />
+              </Button>
+            )}
+          </CardHeader>
 
-      <CardContent>
-        <StopWatch />
-      </CardContent>
-    </Card>
+          <CardContent>
+            <StopWatch />
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 }

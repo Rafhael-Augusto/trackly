@@ -6,9 +6,9 @@ import "./globals.css";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { DraggableWrapper, Reminder } from "@/components/misc";
 import { Sidebar } from "@/components/sidebar";
-import { TimeTracker } from "@/components/timeTracker";
+import { DraggableWrapper, Reminder } from "@/components/misc";
+import { TimeTracker, TimeTrackerProvider } from "@/components/timeTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,14 +40,16 @@ export default function RootLayout({
             <Sidebar />
           </div>
           <TooltipProvider>
-            <div className="w-full p-4 ">{children}</div>
-            <div className="fixed top-0 right-0 h-screen w-screen pointer-events-none">
-              <DraggableWrapper>
-                <div className="pointer-events-auto">
-                  <TimeTracker draggable />
-                </div>
-              </DraggableWrapper>
-            </div>
+            <TimeTrackerProvider>
+              <div className="w-full p-4 ">{children}</div>
+              <div className="fixed top-0 right-0 h-screen w-screen pointer-events-none">
+                <DraggableWrapper>
+                  <div className="pointer-events-auto">
+                    <TimeTracker draggable />
+                  </div>
+                </DraggableWrapper>
+              </div>
+            </TimeTrackerProvider>
           </TooltipProvider>
         </div>
 
