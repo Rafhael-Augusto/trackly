@@ -1,10 +1,9 @@
-import { Goals } from "@/types";
+import { getGoals } from "@/services/goals";
 
 import { GoalsList } from "@/components/goals";
 
 export async function GoalsSection() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/goals`);
-  const data: Goals[] = await res.json();
+  const data = await getGoals();
 
   return <GoalsList data={data} />;
 }

@@ -3,5 +3,5 @@ export type Notifications = {
   title: string;
   description: string;
   time: string;
-  createdAt: string;
+  createdAt: Date;
 };

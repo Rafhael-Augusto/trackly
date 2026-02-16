@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/gennerated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Tasks {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  icon        String
+  createdAt   DateTime @default(now())
+}
+
+model Goals {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Notifications {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  time        String
+  createdAt   DateTime @default(now())
+}
+
+model TimeTracker {
+  id        Int      @id @default(autoincrement())
+  hours     Int
+  minutes   Int
+  seconds   Int
+  createdAt DateTime @default(now())
+}

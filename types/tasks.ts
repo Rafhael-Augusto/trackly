@@ -3,5 +3,5 @@ export type Tasks = {
   title: string;
   description: string;
   icon: string;
-  createdAt: string;
+  createdAt: Date;
 };

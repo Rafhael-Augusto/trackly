@@ -1,7 +1,7 @@
 export type Goals = {
   title: string;
   description: string;
-  createdAt: string;
-  deadline: string;
+  createdAt: Date;
+  deadline: Date;
   id: number;
 };

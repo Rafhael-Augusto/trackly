@@ -3,5 +3,5 @@ export type TimeTracker = {
   hours: number;
   minutes: number;
   seconds: number;
-  createdAt: string;
+  createdAt: Date;
 };
