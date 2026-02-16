@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { Tasks } from "@/types";
+import { Task } from "@/app/generated/prisma/client";
 
 type Props = {
-  data: Tasks;
+  data: Task;
 };
 
 export function TaskItem({ data }: Props) {

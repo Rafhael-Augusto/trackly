@@ -13,15 +13,22 @@ datasource db {
   provider = "postgresql"
 }
 
-model Tasks {
-  id          Int      @id @default(autoincrement())
+enum TaskStatus {
+  PENDING
+  STARTED
+  DONE
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
   title       String
   description String
   icon        String
-  createdAt   DateTime @default(now())
+  status      TaskStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
 }
 
-model Goals {
+model Goal {
   id          Int      @id @default(autoincrement())
   title       String
   description String
@@ -29,7 +36,7 @@ model Goals {
   createdAt   DateTime @default(now())
 }
 
-model Notifications {
+model Notification {
   id          Int      @id @default(autoincrement())
   title       String
   description String

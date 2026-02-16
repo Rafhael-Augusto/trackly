@@ -6,7 +6,7 @@ import { SearchIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-import { Tasks } from "@/types";
+import { Task } from "@/app/generated/prisma/client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,7 @@ const buttonsList = [
 
 type Props = {
   filters?: boolean;
-  data: Tasks[];
+  data: Task[];
 };
 
 type ValueType = (typeof buttonsList)[number]["value"];

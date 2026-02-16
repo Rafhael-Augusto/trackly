@@ -1,4 +1,6 @@
-export async function GET() {
+import { NextRequest } from "next/server";
+
+export async function GET(red: NextRequest) {
   return Response.json([
     {
       title: "Estudar",

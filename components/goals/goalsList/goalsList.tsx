@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Goals } from "@/types";
+import { Goal } from "@/app/generated/prisma/client";
 
 import { Button } from "@/components/ui/button";
 
@@ -10,7 +10,7 @@ import { GoalsTable, GoalsForm } from "@/components/goals";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Props = {
-  data: Goals[];
+  data: Goal[];
 };
 
 export function GoalsList({ data }: Props) {

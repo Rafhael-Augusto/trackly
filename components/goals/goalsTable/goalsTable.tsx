@@ -1,4 +1,4 @@
-import { Goals } from "@/types";
+import { Goal } from "@/app/generated/prisma/client";
 
 import {
   Table,
@@ -22,7 +22,7 @@ const head = [
 ];
 
 type Props = {
-  data: Goals[];
+  data: Goal[];
 };
 
 export function GoalsTable({ data }: Props) {
