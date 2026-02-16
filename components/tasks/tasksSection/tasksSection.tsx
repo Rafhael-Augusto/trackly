@@ -1,6 +1,6 @@
 import { getTasks } from "@/services/tasks";
 
-import { TaskList } from "@/components/tasks";
+import { TaskList } from "@/components/tasks/taskList/taskList";
 
 type Props = {
   filters?: boolean;

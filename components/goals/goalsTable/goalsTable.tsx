@@ -45,7 +45,7 @@ export function GoalsTable({ data }: Props) {
           <TableRow key={item.id} className="hover:bg-secondary/5">
             <TableCell className="font-bold">{item.title}</TableCell>
             <TableCell>{item.description}</TableCell>
-            <TableCell>{item.deadline}</TableCell>
+            <TableCell>Data aqui</TableCell>
           </TableRow>
         ))}
       </TableBody>

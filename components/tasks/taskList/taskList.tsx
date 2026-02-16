@@ -16,7 +16,8 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-import { TaskItemList, TaskForm } from "@/components/tasks";
+import { TaskItemList } from "@/components/tasks/taskItemList/taskItemList";
+import { TaskForm } from "@/components/tasks/taskForm/taskForm";
 
 const buttonsList = [
   {

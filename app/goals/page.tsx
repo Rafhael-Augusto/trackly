@@ -1,4 +1,4 @@
-import { GoalsSection } from "@/components/goals";
+import { GoalsSection } from "@/components/goals/goalsSection/goalsSection";
 
 export default function Goals() {
   return (

@@ -1,4 +1,4 @@
-import { TasksSection } from "../tasksSection/tasksSection";
+import { TasksSection } from "@/components/tasks/tasksSection/tasksSection";
 
 export function TasksFilter() {
   return (

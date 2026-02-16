@@ -1,6 +1,7 @@
-import { GoalsSection } from "@/components/goals";
+import { GoalsSection } from "@/components/goals/goalsSection/goalsSection";
 import { MetricCardList } from "@/components/metric";
-import { TasksChart, TasksSection } from "@/components/tasks";
+import { TasksChart } from "@/components/tasks";
+import { TasksSection } from "@/components/tasks/tasksSection/tasksSection";
 import { TimeTrackerChart } from "@/components/timeTracker";
 
 export default function Home() {

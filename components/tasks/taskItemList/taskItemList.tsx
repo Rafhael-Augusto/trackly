@@ -1,6 +1,6 @@
 import { Tasks } from "@/types";
 
-import { TaskItem } from "@/components/tasks";
+import { TaskItem } from "@/components/tasks/taskItem/taskItem";
 
 type Props = {
   data: Tasks[];
