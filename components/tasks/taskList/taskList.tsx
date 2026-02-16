@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 
+import { SearchIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
-import {
-  BookAIcon,
-  CalculatorIcon,
-  FolderClosedIcon,
-  SearchIcon,
-  ShowerHeadIcon,
-} from "lucide-react";
+import { Tasks } from "@/types";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,39 +17,6 @@ import {
 } from "@/components/ui/input-group";
 
 import { TaskItemList, TaskForm } from "@/components/tasks";
-
-const tasksList = [
-  {
-    title: "Estudar Matematica",
-    description: "Estudar multiplicacao",
-    icon: CalculatorIcon,
-    id: 0,
-  },
-  {
-    title: "Estudar Portugues",
-    description: "Estudar linguagens ",
-    icon: BookAIcon,
-    id: 1,
-  },
-  {
-    title: "Terminar projeto tal",
-    description: "Terminar o caraio do projeto",
-    icon: FolderClosedIcon,
-    id: 2,
-  },
-  {
-    title: "Tomar banho",
-    description: "Estudar multiplicacao",
-    icon: ShowerHeadIcon,
-    id: 3,
-  },
-  {
-    title: "Tomar banho",
-    description: "Estudar multiplicacao",
-    icon: ShowerHeadIcon,
-    id: 4,
-  },
-];
 
 const buttonsList = [
   {
@@ -80,11 +43,12 @@ const buttonsList = [
 
 type Props = {
   filters?: boolean;
+  data: Tasks[];
 };
 
 type ValueType = (typeof buttonsList)[number]["value"];
 
-export function TaskList({ filters }: Props) {
+export function TaskList({ filters, data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState<ValueType>("all");
 
@@ -137,7 +101,7 @@ export function TaskList({ filters }: Props) {
         </CardHeader>
 
         <CardContent className="bg-secondary p-0 rounded-2xl">
-          <TaskItemList data={tasksList} />
+          <TaskItemList data={data} />
         </CardContent>
       </Card>
 

@@ -14,13 +14,14 @@ import {
   SettingsIcon,
 } from "lucide-react";
 
-import { SidebarItem } from "@/components/sidebar";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+
+import { SidebarItem } from "@/components/sidebar";
 
 const buttonsList = [
   {
@@ -35,12 +36,17 @@ const buttonsList = [
     page: "/tasks",
     id: 1,
   },
-
   {
     label: "Metas",
     page: "/goals",
     icon: GoalIcon,
     id: 2,
+  },
+  {
+    label: "Timer",
+    icon: ClockIcon,
+    page: "/stopwatch",
+    id: 4,
   },
 ];
 
@@ -51,13 +57,6 @@ const otherButtons = [
     page: "/notification",
     id: 3,
   },
-  {
-    label: "Timer",
-    icon: ClockIcon,
-    page: "/stopwatch",
-    id: 4,
-  },
-
   {
     label: "Config",
     icon: SettingsIcon,

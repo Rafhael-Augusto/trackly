@@ -1,3 +1,5 @@
+import { Goals } from "@/types";
+
 import {
   Table,
   TableBody,
@@ -19,7 +21,13 @@ const head = [
   },
 ];
 
-export function GoalsTable() {
+type Props = {
+  data: Goals[];
+};
+
+export function GoalsTable({ data }: Props) {
+  console.log("data: ", data);
+
   return (
     <Table>
       <TableHeader>
@@ -33,11 +41,13 @@ export function GoalsTable() {
       </TableHeader>
 
       <TableBody>
-        <TableRow className="hover:bg-secondary/5">
-          <TableCell className="font-bold">Comprar um carro</TableCell>
-          <TableCell>Comprar um carro pra ir pra bahia sei la kkkk</TableCell>
-          <TableCell>21/01/2070</TableCell>
-        </TableRow>
+        {data.map((item) => (
+          <TableRow key={item.id} className="hover:bg-secondary/5">
+            <TableCell className="font-bold">{item.title}</TableCell>
+            <TableCell>{item.description}</TableCell>
+            <TableCell>{item.deadline}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

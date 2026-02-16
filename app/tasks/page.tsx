@@ -1,5 +1,3 @@
-"use client";
-
 import { TasksFilter, TasksPriorityList } from "@/components/tasks";
 
 export default function Tasks() {

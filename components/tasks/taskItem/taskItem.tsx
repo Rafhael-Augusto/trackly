@@ -1,19 +1,16 @@
-import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
+import { Tasks } from "@/types";
+
 type Props = {
-  data: {
-    title: string;
-    description: string;
-    icon: LucideIcon;
-  };
+  data: Tasks;
 };
 
 export function TaskItem({ data }: Props) {
   return (
     <div className="flex items-center gap-4 px-4">
       <div className="rounded-lg p-2 bg-primary/50">
-        <data.icon />
+        <p>Icone aqui</p>
       </div>
       <div>
         <Link href="/#" className="font-bold ">

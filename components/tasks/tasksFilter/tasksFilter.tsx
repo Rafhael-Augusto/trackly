@@ -1,10 +1,10 @@
-import { TaskList } from "@/components/tasks";
+import { TasksSection } from "../tasksSection/tasksSection";
 
 export function TasksFilter() {
   return (
     <div className="grid grid-cols-4 my-4">
       <div className="col-span-3">
-        <TaskList filters />
+        <TasksSection filters />
       </div>
     </div>
   );

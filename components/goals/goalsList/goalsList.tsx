@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 
+import { Goals } from "@/types";
+
 import { Button } from "@/components/ui/button";
+
 import { GoalsTable, GoalsForm } from "@/components/goals";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function GoalsList() {
+type Props = {
+  data: Goals[];
+};
+
+export function GoalsList({ data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,7 +29,7 @@ export function GoalsList() {
         </CardHeader>
 
         <CardContent>
-          <GoalsTable />
+          <GoalsTable data={data} />
         </CardContent>
       </Card>
 

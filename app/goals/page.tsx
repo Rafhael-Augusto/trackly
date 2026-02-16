@@ -1,10 +1,10 @@
-import { GoalsList, GoalsTable } from "@/components/goals";
+import { GoalsSection } from "@/components/goals";
 
 export default function Goals() {
   return (
     <div className="grid grid-cols-4">
       <div className="col-span-3">
-        <GoalsList />
+        <GoalsSection />
       </div>
     </div>
   );

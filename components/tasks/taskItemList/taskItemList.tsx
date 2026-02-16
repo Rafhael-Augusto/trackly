@@ -1,14 +1,9 @@
-import { LucideIcon } from "lucide-react";
+import { Tasks } from "@/types";
 
 import { TaskItem } from "@/components/tasks";
 
 type Props = {
-  data: {
-    title: string;
-    description: string;
-    icon: LucideIcon;
-    id: number;
-  }[];
+  data: Tasks[];
 };
 
 export function TaskItemList({ data }: Props) {
