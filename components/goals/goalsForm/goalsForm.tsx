@@ -54,8 +54,9 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
           isOpen ? "fixed" : "hidden",
         )}
       />
-      <form>
-        <DialogContent className="bg-primary border-0 text-secondary">
+
+      <DialogContent className="bg-primary border-0 text-secondary">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle>Criar nova meta</DialogTitle>
           <FieldSet>
             <FieldGroup className="flex-row ">
@@ -128,8 +129,8 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
               </Button>
             </Field>
           </FieldSet>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

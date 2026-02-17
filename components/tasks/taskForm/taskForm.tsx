@@ -65,8 +65,9 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
           isOpen ? "fixed" : "hidden",
         )}
       />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent className="bg-primary border-0 text-secondary">
+
+      <DialogContent className="bg-primary border-0 text-secondary">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle>Criar nova tarefa</DialogTitle>
           <FieldSet>
             <FieldGroup className="flex-row ">
@@ -158,8 +159,8 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
               </Button>
             </Field>
           </FieldSet>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }
