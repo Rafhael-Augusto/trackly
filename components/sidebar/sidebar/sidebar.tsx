@@ -43,19 +43,19 @@ const buttonsList = [
     id: 2,
   },
   {
-    label: "Timer",
-    icon: ClockIcon,
-    page: "/stopwatch",
-    id: 4,
+    label: "Alerta",
+    icon: BellIcon,
+    page: "/notification",
+    id: 3,
   },
 ];
 
 const otherButtons = [
   {
-    label: "Alerta",
-    icon: BellIcon,
-    page: "/notification",
-    id: 3,
+    label: "Timer",
+    icon: ClockIcon,
+    page: "/stopwatch",
+    id: 4,
   },
   {
     label: "Config",

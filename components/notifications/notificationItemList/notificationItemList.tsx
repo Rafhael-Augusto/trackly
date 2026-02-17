@@ -1,6 +1,6 @@
 import { Task } from "@/app/generated/prisma/client";
 
-import { ClipboardListIcon } from "lucide-react";
+import { BellIcon } from "lucide-react";
 
 import {
   Empty,
@@ -23,11 +23,12 @@ export function NotificationItemList({ data }: Props) {
         <Empty className="border border-dashed m-4">
           <EmptyHeader>
             <EmptyMedia>
-              <ClipboardListIcon />
+              <BellIcon />
             </EmptyMedia>
             <EmptyTitle>Nenhuma notificacao</EmptyTitle>
             <EmptyDescription>
-              Crie uma nova notificacao clicando no botao 'Nova Notificacao'
+              Crie uma nova notificacao clicando no botao &apos;Nova
+              Notificacao&apos;
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
