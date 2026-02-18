@@ -1,4 +1,4 @@
-import { Task } from "@/app/generated/prisma/client";
+import { Notification } from "@/app/generated/prisma/client";
 
 import { BellIcon } from "lucide-react";
 
@@ -13,7 +13,7 @@ import {
 import { NotificationItem } from "@/components/notifications";
 
 type Props = {
-  data: Task[];
+  data: Notification[];
 };
 
 export function NotificationItemList({ data }: Props) {

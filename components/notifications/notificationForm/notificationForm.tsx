@@ -1,5 +1,7 @@
 "use client";
 
+import { useMask } from "@react-input/mask";
+
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,6 +24,7 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
+import { createNewNotification } from "./actions";
 
 type Props = {
   isOpen: boolean;
@@ -29,6 +32,11 @@ type Props = {
 };
 
 export function NotificationForm({ isOpen, setIsOpen }: Props) {
+  const inputRef = useMask({
+    mask: "##:##",
+    replacement: { "#": /\d/ },
+  });
+
   const {
     register,
     handleSubmit,
@@ -37,8 +45,12 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  const { ref: registerRef, ...rest } = register("time");
+
+  async function onSubmit(data: FormData) {
+    await createNewNotification(data);
+
+    setIsOpen(false);
   }
 
   return (
@@ -64,14 +76,14 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
                   Nome da notificacao
                 </FieldLabel>
                 <Input
-                  {...register("notificationName")}
+                  {...register("title")}
                   id="notification-name"
                   autoComplete="off"
                   placeholder="Notificacao"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.notificationName && (
-                  <FieldError>{errors.notificationName.message}</FieldError>
+                {errors.title && (
+                  <FieldError>{errors.title.message}</FieldError>
                 )}
               </Field>
               <Field>
@@ -79,17 +91,38 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
                   Descricao da notificacao
                 </FieldLabel>
                 <Input
-                  {...register("notificationDesc")}
+                  {...register("description")}
                   id="notification-description"
                   autoComplete="off"
                   placeholder="Descricao"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.notificationDesc && (
-                  <FieldError>{errors.notificationDesc.message}</FieldError>
+                {errors.description && (
+                  <FieldError>{errors.description.message}</FieldError>
                 )}
               </Field>
             </FieldGroup>
+
+            <Field>
+              <FieldLabel htmlFor="notification-time">
+                Selecionar horario
+              </FieldLabel>
+
+              <Input
+                {...rest}
+                ref={(node) => {
+                  registerRef(node);
+                  if (node) {
+                    inputRef.current = node;
+                  }
+                }}
+                id="notification-time"
+                autoComplete="off"
+                placeholder="Horario"
+                className="bg-secondary/5 p-2 rounded-xl border-0"
+              />
+              {errors.time && <FieldError>{errors.time.message}</FieldError>}
+            </Field>
 
             <Field>
               <Button variant={"secondary"} type="submit">

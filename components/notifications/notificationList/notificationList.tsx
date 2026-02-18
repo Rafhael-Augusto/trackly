@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Task } from "@/app/generated/prisma/client";
+import { Notification } from "@/app/generated/prisma/client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import {
 } from "@/components/notifications";
 
 type Props = {
-  data: Task[];
+  data: Notification[];
 };
 
 export function NotificationList({ data }: Props) {
