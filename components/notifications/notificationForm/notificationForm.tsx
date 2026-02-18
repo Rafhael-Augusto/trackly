@@ -6,7 +6,13 @@ import { useForm } from "react-hook-form";
 
 import { FormData, formSchema } from "./schema";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -45,7 +51,12 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
       />
       <DialogContent className="bg-primary border-0 text-secondary">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle>Criar nova notificacao</DialogTitle>
+          <DialogHeader>
+            <DialogTitle>Criar nova notificacao</DialogTitle>
+            <DialogDescription className="sr-only">
+              Crie uma nova notificacao
+            </DialogDescription>
+          </DialogHeader>
           <FieldSet>
             <FieldGroup className="flex-row ">
               <Field>

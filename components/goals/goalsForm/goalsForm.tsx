@@ -10,7 +10,13 @@ import { FormData, formSchema } from "./schema";
 
 import { CalendarIcon } from "lucide-react";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,7 +63,12 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
 
       <DialogContent className="bg-primary border-0 text-secondary">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle>Criar nova meta</DialogTitle>
+          <DialogHeader>
+            <DialogTitle>Criar nova meta</DialogTitle>
+            <DialogDescription className="sr-only">
+              Crie uma nova meta
+            </DialogDescription>
+          </DialogHeader>
           <FieldSet>
             <FieldGroup className="flex-row ">
               <Field>

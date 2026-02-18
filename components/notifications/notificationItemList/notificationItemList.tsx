@@ -27,7 +27,7 @@ export function NotificationItemList({ data }: Props) {
             </EmptyMedia>
             <EmptyTitle>Nenhuma notificacao</EmptyTitle>
             <EmptyDescription>
-              Crie uma nova notificacao clicando no botao &apos;Nova
+              Crie uma nova notificacao clicando no botao &apos;Criar
               Notificacao&apos;
             </EmptyDescription>
           </EmptyHeader>

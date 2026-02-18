@@ -35,8 +35,6 @@ type Props = {
 };
 
 export function GoalsTable({ data }: Props) {
-  console.log("data: ", data);
-
   return (
     <div>
       {data.length < 1 && (
