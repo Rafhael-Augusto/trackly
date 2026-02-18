@@ -37,6 +37,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
+import { createNewTask } from "./actions";
 
 type Props = {
   isOpen: boolean;
@@ -55,12 +56,14 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
     resolver: zodResolver(formSchema),
   });
 
-  const iconInput = watch("taskIcon") || "";
+  const iconInput = watch("icon") || "";
 
   const GetIcon = findIcon(currentIcon);
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    await createNewTask(data);
+
+    setIsOpen(false);
   }
 
   return (
@@ -85,14 +88,14 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
               <Field>
                 <FieldLabel htmlFor="task-name">Nome da tarefa</FieldLabel>
                 <Input
-                  {...register("taskName")}
+                  {...register("title")}
                   id="task-name"
                   autoComplete="off"
                   placeholder="Tarefa"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.taskName && (
-                  <FieldError>{errors.taskName.message}</FieldError>
+                {errors.title && (
+                  <FieldError>{errors.title.message}</FieldError>
                 )}
               </Field>
               <Field>
@@ -100,14 +103,14 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
                   Descricao da tarefa
                 </FieldLabel>
                 <Input
-                  {...register("taskDescription")}
+                  {...register("description")}
                   id="task-description"
                   autoComplete="off"
                   placeholder="Descricao"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.taskDescription && (
-                  <FieldError>{errors.taskDescription.message}</FieldError>
+                {errors.description && (
+                  <FieldError>{errors.description.message}</FieldError>
                 )}
               </Field>
             </FieldGroup>
@@ -121,15 +124,13 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
                   </div>
 
                   <ComboboxInput
-                    {...register("taskIcon")}
+                    {...register("icon")}
                     id="icon"
                     placeholder="Icone"
                     className="border-0 w-full"
                   />
                 </div>
-                {errors.taskIcon && (
-                  <FieldError>{errors.taskIcon.message}</FieldError>
-                )}
+                {errors.icon && <FieldError>{errors.icon.message}</FieldError>}
 
                 <ComboboxContent className="bg-primary text-secondary">
                   <ComboboxEmpty>Icone nao encontrado</ComboboxEmpty>

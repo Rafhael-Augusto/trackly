@@ -4,6 +4,7 @@ import { useStopwatch } from "@/hooks/useStopwatch";
 
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
+import { createNewTime } from "./actions";
 
 export function StopWatch() {
   const { seconds, minutes, hours, isRunning, start, pause, reset } =
@@ -19,6 +20,10 @@ export function StopWatch() {
 
   const formatTime = (value: number) => {
     return String(value).padStart(2, "0");
+  };
+
+  const handleRegister = () => {
+    createNewTime(seconds);
   };
 
   return (
@@ -40,7 +45,9 @@ export function StopWatch() {
         </ButtonGroup>
 
         {seconds > 0 && !isRunning && (
-          <Button variant={"secondary"}>Registrar</Button>
+          <Button onClick={() => handleRegister()} variant={"secondary"}>
+            Registrar
+          </Button>
         )}
       </div>
     </div>

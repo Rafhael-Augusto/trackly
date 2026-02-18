@@ -1,14 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Prisma, TimeTracker } from "@/app/generated/prisma/client";
 
-function secondsToHMS(totalSeconds: number) {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  return { hours, minutes, seconds };
-}
-
 const weekDays = [
   "Domingo",
   "Segunda",
@@ -76,7 +68,7 @@ export async function getMonthYearData() {
 
     return {
       day,
-      ...secondsToHMS(totalSeconds),
+      totalSeconds,
     };
   });
 
@@ -91,7 +83,7 @@ export async function getMonthYearData() {
 
     return {
       month,
-      ...secondsToHMS(totalSeconds),
+      totalSeconds,
     };
   });
 

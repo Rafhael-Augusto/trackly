@@ -26,9 +26,7 @@ import { CustomToolTip } from "@/components/misc/customTooltip/customTooltip";
 type Period = "weekly" | "monthly";
 
 type PropsData = {
-  hours: number;
-  minutes: number;
-  seconds: number;
+  totalSeconds: number;
 };
 
 type WeeklyData = {
@@ -60,13 +58,11 @@ export function TimeTrackerChart({ props }: Props) {
 
   const newChartData = (data: WeeklyData[] | MonthlyData[]): UpdatedData[] => {
     const newDataArray = data.map((item) => {
-      const label = "day" in item ? item.day : item.month;
+      const label = "day" in item ? item.day : item.month.slice(0, 3);
 
       return {
         label: label,
-        horas: +(item.hours + item.minutes / 60 + item.seconds / 3600).toFixed(
-          2,
-        ),
+        horas: +(item.totalSeconds / 3600).toFixed(2),
       };
     });
 

@@ -32,6 +32,7 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
+import { createNewGoal } from "./actions";
 
 type Props = {
   isOpen: boolean;
@@ -48,8 +49,10 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    await createNewGoal(data);
+
+    setIsOpen(false);
   }
 
   return (
@@ -74,14 +77,14 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
               <Field>
                 <FieldLabel htmlFor="goal-name">Nome da meta</FieldLabel>
                 <Input
-                  {...register("goalName")}
+                  {...register("title")}
                   id="task-name"
                   autoComplete="off"
                   placeholder="Meta"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.goalName && (
-                  <FieldError>{errors.goalName.message}</FieldError>
+                {errors.title && (
+                  <FieldError>{errors.title.message}</FieldError>
                 )}
               </Field>
               <Field>
@@ -89,14 +92,14 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
                   Descricao da meta
                 </FieldLabel>
                 <Input
-                  {...register("goalDescription")}
+                  {...register("description")}
                   id="goal-description"
                   autoComplete="off"
                   placeholder="Descricao"
                   className="bg-secondary/5 p-2 rounded-xl border-0"
                 />
-                {errors.goalDescription && (
-                  <FieldError>{errors.goalDescription.message}</FieldError>
+                {errors.description && (
+                  <FieldError>{errors.description.message}</FieldError>
                 )}
               </Field>
             </FieldGroup>
@@ -105,7 +108,7 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
               <FieldLabel htmlFor="deadline">Selecione o deadline</FieldLabel>
 
               <Controller
-                name="date"
+                name="deadline"
                 control={control}
                 render={({ field }) => (
                   <Popover>
@@ -131,7 +134,9 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
                 )}
               />
 
-              {errors.date && <FieldError>{errors.date.message}</FieldError>}
+              {errors.deadline && (
+                <FieldError>{errors.deadline.message}</FieldError>
+              )}
             </Field>
 
             <Field>
