@@ -29,7 +29,7 @@ const months = [
 export async function getTimeTrackers(
   where?: Prisma.TimeTrackerWhereInput,
 ): Promise<TimeTracker[]> {
-  return prisma.timeTracker.findMany();
+  return prisma.timeTracker.findMany({ where });
 }
 
 export async function getTimeTracker(id: number): Promise<TimeTracker | null> {

@@ -81,7 +81,7 @@ type UpdatedData = {
 
 export function TasksChart({ props }: Props) {
   const [period, setPeriod] = useState<Period>("weekly");
-  const [lines, setLines] = useState<Lines>("done");
+  const [lines, setLines] = useState<Lines>("all");
 
   const [data, setData] = useState<WeeklyData[] | MonthlyData[]>(
     props.dataWeekly,

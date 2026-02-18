@@ -43,6 +43,7 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
   const {
     register,
     handleSubmit,
+    reset,
     control,
     formState: { errors },
   } = useForm<FormData>({
@@ -53,6 +54,7 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
     await createNewGoal(data);
 
     setIsOpen(false);
+    reset();
   }
 
   return (

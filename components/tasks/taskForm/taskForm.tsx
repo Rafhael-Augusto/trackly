@@ -51,19 +51,21 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const iconInput = watch("icon") || "";
+  let iconInput = watch("icon") || "";
 
-  const GetIcon = findIcon(currentIcon);
+  let GetIcon = findIcon(currentIcon);
 
   async function onSubmit(data: FormData) {
     await createNewTask(data);
 
     setIsOpen(false);
+    reset();
   }
 
   return (

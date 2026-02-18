@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchIcon } from "lucide-react";
 
@@ -18,6 +18,7 @@ import {
 
 import { TaskItemList } from "@/components/tasks/taskItemList/taskItemList";
 import { TaskForm } from "@/components/tasks/taskForm/taskForm";
+import { Spinner } from "@/components/ui/spinner";
 
 const buttonsList = [
   {
@@ -49,9 +50,35 @@ type Props = {
 
 type ValueType = (typeof buttonsList)[number]["value"];
 
+const statusMap: Record<ValueType, string | null> = {
+  all: null,
+  done: "DONE",
+  started: "STARTED",
+  pending: "PENDING",
+};
+
 export function TaskList({ filters, data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState<ValueType>("all");
+
+  const [tasks, setTasks] = useState(data);
+
+  const handleFilterSelect = (filter: ValueType) => {
+    setSelectedButton(filter);
+
+    const status = statusMap[filter];
+
+    const filteredData = status
+      ? data.filter((item) => item.status === status)
+      : data;
+
+    setTasks(filteredData);
+  };
+
+  useEffect(() => {
+    setTasks(data);
+    setSelectedButton("all");
+  }, [data]);
 
   return (
     <div>
@@ -81,7 +108,7 @@ export function TaskList({ filters, data }: Props) {
                     )}
                   >
                     <Button
-                      onClick={() => setSelectedButton(item.value)}
+                      onClick={() => handleFilterSelect(item.value)}
                       variant={"default"}
                     >
                       {item.label}
@@ -102,7 +129,7 @@ export function TaskList({ filters, data }: Props) {
         </CardHeader>
 
         <CardContent className="bg-secondary p-0 rounded-2xl">
-          <TaskItemList data={data} />
+          <TaskItemList data={tasks} />
         </CardContent>
       </Card>
 

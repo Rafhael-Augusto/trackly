@@ -40,6 +40,7 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -51,6 +52,7 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
     await createNewNotification(data);
 
     setIsOpen(false);
+    reset();
   }
 
   return (
