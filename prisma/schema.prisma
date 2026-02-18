@@ -46,8 +46,6 @@ model Notification {
 
 model TimeTracker {
   id        Int      @id @default(autoincrement())
-  hours     Int
-  minutes   Int
-  seconds   Int
+  duration  Int
   createdAt DateTime @default(now())
 }

@@ -1,8 +1,9 @@
 import { GoalsSection } from "@/components/goals/goalsSection/goalsSection";
 import { MetricCardList } from "@/components/metric";
-import { TasksChart } from "@/components/tasks";
+import { TasksChartSection } from "@/components/tasks/tasksChartSection/tasksChartSection";
 import { TasksSection } from "@/components/tasks/tasksSection/tasksSection";
 import { TimeTrackerChart } from "@/components/timeTracker";
+import { TimeTrackerSection } from "@/components/timeTracker/timeTrackerSection/timeTrackerSection";
 
 export default function Home() {
   return (
@@ -12,8 +13,8 @@ export default function Home() {
       </div>
       <div className="grid grid-cols-4 gap-4">
         <div className="flex flex-col justify-between gap-4 col-span-3 h-full">
-          <TasksChart />
-          <TimeTrackerChart />
+          <TasksChartSection />
+          <TimeTrackerSection />
           <GoalsSection />
         </div>
 

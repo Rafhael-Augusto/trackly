@@ -15,8 +15,7 @@ type Props = {
   data: {
     title: string;
     value: number;
-    monthlyChange: number;
-    goTo: string;
+    monthlyChange?: number;
     id: number;
   };
 };
@@ -39,7 +38,11 @@ export function MetricCard({ data }: Props) {
         <p>{data.value}</p>
       </CardContent>
       <CardFooter>
-        <MonthlyChange monthlyChange={data.monthlyChange} />
+        <div>
+          {data.monthlyChange !== undefined && (
+            <MonthlyChange monthlyChange={data.monthlyChange} />
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

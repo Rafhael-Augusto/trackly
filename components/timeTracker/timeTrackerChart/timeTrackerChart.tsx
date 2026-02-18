@@ -23,45 +23,42 @@ import {
 
 import { CustomToolTip } from "@/components/misc/customTooltip/customTooltip";
 
-const dataWeekly = [
-  { day: "Segunda", hours: 1, minutes: 31, seconds: 2 },
-  { day: "Terca", hours: 2, minutes: 15, seconds: 30 },
-  { day: "Quarta", hours: 0, minutes: 45, seconds: 0 },
-  { day: "Quinta", hours: 0, minutes: 15, seconds: 0 },
-  { day: "Sexta", hours: 1, minutes: 45, seconds: 0 },
-  { day: "Sabado", hours: 0, minutes: 25, seconds: 40 },
-  { day: "Domingo", hours: 0, minutes: 55, seconds: 38 },
-];
-
-const dataMonthly = [
-  {
-    month: "Janeiro",
-    hours: 30,
-    minutes: 31,
-    seconds: 2,
-  },
-  {
-    month: "Fevereiro",
-    hours: 15,
-    minutes: 3,
-    seconds: 2,
-  },
-];
-
 type Period = "weekly" | "monthly";
 
-type Data = (typeof dataWeekly)[number] | (typeof dataMonthly)[number];
+type PropsData = {
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+type WeeklyData = {
+  day: string;
+} & PropsData;
+
+type MonthlyData = {
+  month: string;
+} & PropsData;
+
+type Props = {
+  props: {
+    dataWeekly: WeeklyData[];
+    dataMonthly: MonthlyData[];
+  };
+};
+
 type UpdatedData = {
   label?: string;
   horas?: number;
 };
 
-export function TimeTrackerChart() {
+export function TimeTrackerChart({ props }: Props) {
   const [period, setPeriod] = useState("weekly");
 
-  const [data, setData] = useState<Data[]>(dataWeekly);
+  const [data, setData] = useState<WeeklyData[] | MonthlyData[]>(
+    props.dataWeekly,
+  );
 
-  const newChartData = (data: Data[]): UpdatedData[] => {
+  const newChartData = (data: WeeklyData[] | MonthlyData[]): UpdatedData[] => {
     const newDataArray = data.map((item) => {
       const label = "day" in item ? item.day : item.month;
 
@@ -78,8 +75,8 @@ export function TimeTrackerChart() {
 
   const handleDataChange = (value: Period) => {
     const dataMap = {
-      monthly: dataMonthly,
-      weekly: dataWeekly,
+      monthly: props.dataMonthly,
+      weekly: props.dataWeekly,
     };
 
     setData(dataMap[value]);
