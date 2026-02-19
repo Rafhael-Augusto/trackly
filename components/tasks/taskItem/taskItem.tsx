@@ -1,14 +1,14 @@
 import Link from "next/link";
 
 import { Task } from "@/app/generated/prisma/client";
-import { findIcon } from "@/utils/icons";
+import { iconsMap } from "@/lib/icons";
 
 type Props = {
   data: Task;
 };
 
 export function TaskItem({ data }: Props) {
-  const Icon = findIcon(data.icon);
+  const Icon = iconsMap[data.icon as keyof typeof iconsMap];
 
   return (
     <div className="flex items-center gap-4 px-4">

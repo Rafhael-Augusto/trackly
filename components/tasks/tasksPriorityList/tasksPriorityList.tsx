@@ -1,5 +1,3 @@
-import { FlowerIcon } from "lucide-react";
-
 import { Progress } from "@/components/ui/progress";
 import { Field, FieldLabel } from "@/components/ui/field";
 

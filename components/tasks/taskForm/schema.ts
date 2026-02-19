@@ -1,4 +1,4 @@
-import { iconsName } from "@/utils/icons";
+import { iconsName } from "@/lib/icons";
 import { z } from "zod";
 
 export const formSchema = z.object({

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { findIcon, iconsList, iconsName } from "@/utils/icons";
+import { iconsList, iconsMap, iconsName } from "@/lib/icons";
 import { FormData, formSchema } from "./schema";
 
 import {
@@ -68,7 +68,7 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
 
   const iconInput = watch("icon") || "";
 
-  const GetIcon = findIcon(currentIcon);
+  const GetIcon = iconsMap[currentIcon as keyof typeof iconsMap];
 
   async function onSubmit(data: FormData) {
     await createNewTask(data);

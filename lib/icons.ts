@@ -15,7 +15,7 @@ import {
   WalletIcon,
 } from "lucide-react";
 
-const iconsMap = {
+export const iconsMap = {
   calculadora: CalculatorIcon,
   livro: BookAIcon,
   chuveiro: ShowerHeadIcon,
@@ -32,18 +32,9 @@ const iconsMap = {
   usuario: UserIcon,
 } as const;
 
-type IconsType = keyof typeof iconsMap;
-export const iconsName = Object.keys(iconsMap) as IconsType[];
+export const iconsName = Object.keys(iconsMap) as (keyof typeof iconsMap)[];
 
-export const iconsList = (Object.keys(iconsMap) as IconsType[]).map((key) => ({
-  name: key,
-  component: iconsMap[key],
+export const iconsList = Object.entries(iconsMap).map(([name, component]) => ({
+  name,
+  component,
 }));
-
-export const findIcon = (name: string) => {
-  const icon = iconsList.find((item) => item.name === name);
-
-  if (icon) {
-    return icon.component;
-  }
-};

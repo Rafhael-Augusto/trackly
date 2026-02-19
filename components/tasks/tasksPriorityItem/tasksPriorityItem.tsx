@@ -7,14 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { findIcon } from "@/utils/icons";
+import { iconsMap } from "@/lib/icons";
 
 type Props = {
   data: Task;
 };
 
 export function TasksPriorityItem({ data }: Props) {
-  const Icon = findIcon(data.icon);
+  const Icon = iconsMap[data.icon as keyof typeof iconsMap];
 
   return (
     <Card>

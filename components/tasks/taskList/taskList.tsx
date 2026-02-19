@@ -18,7 +18,6 @@ import {
 
 import { TaskItemList } from "@/components/tasks/taskItemList/taskItemList";
 import { TaskForm } from "@/components/tasks/taskForm/taskForm";
-import { Spinner } from "@/components/ui/spinner";
 
 const buttonsList = [
   {
@@ -61,25 +60,11 @@ export function TaskList({ filters, data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState<ValueType>("all");
 
-  const [tasks, setTasks] = useState(data);
+  const status = statusMap[selectedButton];
 
-  const handleFilterSelect = (filter: ValueType) => {
-    setSelectedButton(filter);
-
-    const status = statusMap[filter];
-
-    const filteredData = status
-      ? data.filter((item) => item.status === status)
-      : data;
-
-    setTasks(filteredData);
-  };
-
-  useEffect(() => {
-    if (tasks !== data) {
-      setTasks(data);
-    }
-  }, [data]);
+  const filteredTasks = status
+    ? data.filter((item) => item.status === status)
+    : data;
 
   return (
     <div>
@@ -109,7 +94,7 @@ export function TaskList({ filters, data }: Props) {
                     )}
                   >
                     <Button
-                      onClick={() => handleFilterSelect(item.value)}
+                      onClick={() => setSelectedButton(item.value)}
                       variant={"default"}
                     >
                       {item.label}
@@ -130,7 +115,7 @@ export function TaskList({ filters, data }: Props) {
         </CardHeader>
 
         <CardContent className="bg-secondary p-0 rounded-2xl">
-          <TaskItemList data={tasks} />
+          <TaskItemList data={filteredTasks} />
         </CardContent>
       </Card>
 
