@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import { Task } from "@/app/generated/prisma/client";
 
 import {
   Card,
@@ -7,26 +7,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { findIcon } from "@/utils/icons";
 
 type Props = {
-  data: {
-    taskName: string;
-    taskDescription: string;
-    taskIcon: LucideIcon;
-  };
+  data: Task;
 };
 
 export function TasksPriorityItem({ data }: Props) {
+  const Icon = findIcon(data.icon);
+
   return (
     <Card>
       <CardHeader className="h-full">
-        <CardTitle>{data.taskName}</CardTitle>
-        <CardDescription>{data.taskDescription}</CardDescription>
+        <CardTitle>{data.title}</CardTitle>
+        <CardDescription>{data.description}</CardDescription>
       </CardHeader>
 
-      <CardContent>
-        <data.taskIcon />
-      </CardContent>
+      <CardContent>{Icon && <Icon />}</CardContent>
     </Card>
   );
 }

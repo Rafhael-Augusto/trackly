@@ -4,41 +4,30 @@ import { Progress } from "@/components/ui/progress";
 import { Field, FieldLabel } from "@/components/ui/field";
 
 import { TasksPriorityItem } from "@/components/tasks";
+import { getTasks } from "@/services/tasks";
 
-const cards = [
-  {
-    taskName: "Estudar Matematica",
-    taskDescription: "Estudar multiplicacao",
-    taskIcon: FlowerIcon,
-    id: 0,
-  },
-  {
-    taskName: "Estudar Portugues",
-    taskDescription: "Estudar linguagens",
-    taskIcon: FlowerIcon,
-    id: 1,
-  },
-  {
-    taskName: "Terminar projeto tal",
-    taskDescription: "Terminar o projeto",
-    taskIcon: FlowerIcon,
-    id: 2,
-  },
-];
+export async function TasksPriorityList() {
+  const dataHighPriority = await getTasks({ priority: "HIGH" });
 
-export function TasksPriorityList() {
+  const data = await getTasks();
+  const dataTaskDone = await getTasks({ status: "DONE" });
+
+  const percentage = Math.round((dataTaskDone.length / data.length) * 100);
+
   return (
     <div>
       <Field className="mb-8 w-1/5">
         <FieldLabel className="text-lg">
           <span>Progresso total</span>
-          <span className="ml-auto">10%</span>
+          <span className="ml-auto">
+            {Number.isNaN(percentage) ? 0 : percentage}%
+          </span>
         </FieldLabel>
-        <Progress value={10} />
+        <Progress value={percentage} />
       </Field>
 
       <div className="grid grid-cols-4 gap-4">
-        {cards.map((item) => (
+        {dataHighPriority.map((item) => (
           <TasksPriorityItem key={item.id} data={item} />
         ))}
       </div>
