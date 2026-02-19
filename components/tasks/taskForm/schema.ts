@@ -5,6 +5,7 @@ export const formSchema = z.object({
   title: z.string().min(3, "Nome precisa ter pelo menos 3 caracteres"),
   description: z.string(),
   icon: z.enum(iconsName, "Icone invalido"),
+  priority: z.enum(["HIGH", "LOW"], "Prioridade invalida"),
 });
 
 export type FormData = z.infer<typeof formSchema>;

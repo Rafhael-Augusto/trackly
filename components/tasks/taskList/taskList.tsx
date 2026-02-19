@@ -76,8 +76,9 @@ export function TaskList({ filters, data }: Props) {
   };
 
   useEffect(() => {
-    setTasks(data);
-    setSelectedButton("all");
+    if (tasks !== data) {
+      setTasks(data);
+    }
   }, [data]);
 
   return (

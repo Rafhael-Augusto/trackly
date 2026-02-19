@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import { findIcon, iconsList, iconsName } from "@/utils/icons";
 import { FormData, formSchema } from "./schema";
@@ -38,6 +38,14 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { createNewTask } from "./actions";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
   isOpen: boolean;
@@ -52,14 +60,15 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
     handleSubmit,
     watch,
     reset,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  let iconInput = watch("icon") || "";
+  const iconInput = watch("icon") || "";
 
-  let GetIcon = findIcon(currentIcon);
+  const GetIcon = findIcon(currentIcon);
 
   async function onSubmit(data: FormData) {
     await createNewTask(data);
@@ -117,55 +126,90 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
               </Field>
             </FieldGroup>
 
-            <Field>
-              <FieldLabel htmlFor="icon">Icone</FieldLabel>
-              <Combobox items={iconsName}>
-                <div className="flex gap-2 items-center bg-secondary/5 p-2 rounded-xl">
-                  <div className="flex items-center gap-2">
-                    {GetIcon && <GetIcon />}
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="task-priority">
+                  Prioridade da tarefa
+                </FieldLabel>
+
+                <Controller
+                  name="priority"
+                  control={control}
+                  defaultValue="LOW"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
+                      <SelectTrigger className="flex gap-2 items-center bg-secondary/5 rounded-xl border-0">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="text-secondary bg-primary">
+                        <SelectGroup>
+                          <SelectItem value="HIGH">Alto</SelectItem>
+                          <SelectItem value="LOW">Baixo</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+
+                {errors.priority && (
+                  <FieldError>{errors.priority.message}</FieldError>
+                )}
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="icon">Icone</FieldLabel>
+                <Combobox items={iconsName}>
+                  <div className="flex gap-2 items-center bg-secondary/5 px-2 rounded-xl">
+                    <div className="flex items-center gap-2">
+                      {GetIcon && <GetIcon />}
+                    </div>
+
+                    <ComboboxInput
+                      {...register("icon")}
+                      id="icon"
+                      placeholder="Icone"
+                      className="border-0 w-full"
+                    />
                   </div>
+                  {errors.icon && (
+                    <FieldError>{errors.icon.message}</FieldError>
+                  )}
 
-                  <ComboboxInput
-                    {...register("icon")}
-                    id="icon"
-                    placeholder="Icone"
-                    className="border-0 w-full"
-                  />
-                </div>
-                {errors.icon && <FieldError>{errors.icon.message}</FieldError>}
+                  <ComboboxContent className="bg-primary text-secondary">
+                    <ComboboxEmpty>Icone nao encontrado</ComboboxEmpty>
+                    <ComboboxList className="flex flex-wrap gap-4">
+                      {iconsList.map((item) => {
+                        const Icon = item.component;
 
-                <ComboboxContent className="bg-primary text-secondary">
-                  <ComboboxEmpty>Icone nao encontrado</ComboboxEmpty>
-                  <ComboboxList className="flex flex-wrap gap-4">
-                    {iconsList.map((item) => {
-                      const Icon = item.component;
-
-                      if (item.name.includes(iconInput.toLowerCase()))
-                        return (
-                          <div
-                            key={item.name}
-                            onClick={() => setCurrentIcon(item.name)}
-                            className="w-full flex-1 flex justify-center"
-                          >
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <ComboboxItem
-                                  key={item.name}
-                                  value={item.name}
-                                  className="p-3 "
-                                >
-                                  <Icon />
-                                </ComboboxItem>
-                              </TooltipTrigger>
-                              <TooltipContent>{item.name}</TooltipContent>
-                            </Tooltip>
-                          </div>
-                        );
-                    })}
-                  </ComboboxList>
-                </ComboboxContent>
-              </Combobox>
-            </Field>
+                        if (item.name.includes(iconInput.toLowerCase()))
+                          return (
+                            <div
+                              key={item.name}
+                              onClick={() => setCurrentIcon(item.name)}
+                              className="w-full flex-1 flex justify-center"
+                            >
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <ComboboxItem
+                                    key={item.name}
+                                    value={item.name}
+                                    className="p-3 "
+                                  >
+                                    <Icon />
+                                  </ComboboxItem>
+                                </TooltipTrigger>
+                                <TooltipContent>{item.name}</TooltipContent>
+                              </Tooltip>
+                            </div>
+                          );
+                      })}
+                    </ComboboxList>
+                  </ComboboxContent>
+                </Combobox>
+              </Field>
+            </FieldGroup>
 
             <Field>
               <Button variant={"secondary"} type="submit">
