@@ -19,13 +19,19 @@ enum TaskStatus {
   DONE
 }
 
+enum TaskPriority {
+  HIGH
+  LOW
+}
+
 model Task {
-  id          Int        @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   title       String
   description String
   icon        String
-  status      TaskStatus @default(PENDING)
-  createdAt   DateTime   @default(now())
+  status      TaskStatus   @default(PENDING)
+  priority    TaskPriority @default(LOW)
+  createdAt   DateTime     @default(now())
 }
 
 model Goal {
