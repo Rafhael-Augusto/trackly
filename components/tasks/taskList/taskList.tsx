@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-import { SearchIcon } from "lucide-react";
+import { useDebounce } from "use-debounce";
 
 import { cn } from "@/lib/utils";
 
 import { Task } from "@/app/generated/prisma/client";
+
+import { SearchIcon } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,11 +62,22 @@ export function TaskList({ filters, data }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState<ValueType>("all");
 
+  const [query, setQuery] = useState("");
+  const [debounceQuery] = useDebounce(query, 500);
+
+  const [filteredTasks, setFilteredTasks] = useState(data);
+
   const status = statusMap[selectedButton];
 
-  const filteredTasks = status
-    ? data.filter((item) => item.status === status)
-    : data;
+  useEffect(() => {
+    let result = status ? data.filter((item) => item.status === status) : data;
+
+    if (debounceQuery) {
+      result = result.filter((item) => item.title.includes(debounceQuery));
+    }
+
+    setFilteredTasks(result);
+  }, [data, status, debounceQuery]);
 
   return (
     <div>
@@ -104,7 +117,12 @@ export function TaskList({ filters, data }: Props) {
               </ul>
 
               <InputGroup className="w-1/5 bg-secondary/5 border-0">
-                <InputGroupInput type="search" placeholder="Pesquisar..." />
+                <InputGroupInput
+                  type="search"
+                  placeholder="Pesquisar..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
 
                 <InputGroupAddon align="inline-end">
                   <SearchIcon />

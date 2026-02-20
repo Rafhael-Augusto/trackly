@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LucideIcon } from "lucide-react";
 
 type Props = {
   isOpen: boolean;
@@ -53,32 +54,51 @@ type Props = {
 };
 
 export function TaskForm({ isOpen, setIsOpen }: Props) {
-  const [currentIcon, setCurrentIcon] = useState("");
-
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
     control,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const iconInput = watch("icon") || "";
-
-  const GetIcon = iconsMap[currentIcon as keyof typeof iconsMap];
+  const iconNameInput = watch("icon");
 
   async function onSubmit(data: FormData) {
     await createNewTask(data);
 
     setIsOpen(false);
-    reset();
   }
 
+  const onClose = () => {
+    setIsOpen(false);
+
+    reset({
+      title: "",
+      description: "",
+      icon: "prancheta",
+      priority: "LOW",
+    });
+  };
+
+  const getIcons = useMemo(() => {
+    const icons = !iconNameInput
+      ? iconsList
+      : iconsList.filter((icon) =>
+          icon.name.includes(iconNameInput.toLowerCase()),
+        );
+
+    return icons;
+  }, [iconNameInput]);
+
+  const GetCurrentIcon = iconsMap[iconNameInput];
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
+    <Dialog open={isOpen} onOpenChange={() => onClose()} modal={false}>
       <div
         className={cn(
           "backdrop-blur-xs bg-black/50 h-screen w-screen top-0 left-0 z-0",
@@ -160,14 +180,15 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
               </Field>
               <Field>
                 <FieldLabel htmlFor="icon">Icone</FieldLabel>
-                <Combobox items={iconsName}>
+                <Combobox items={getIcons.map((item) => item.name)}>
                   <div className="flex gap-2 items-center bg-secondary/5 px-2 rounded-xl">
                     <div className="flex items-center gap-2">
-                      {GetIcon && <GetIcon />}
+                      {GetCurrentIcon && <GetCurrentIcon />}
                     </div>
 
                     <ComboboxInput
                       {...register("icon")}
+                      value={iconNameInput}
                       id="icon"
                       placeholder="Icone"
                       className="border-0 w-full"
@@ -180,31 +201,28 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
                   <ComboboxContent className="bg-primary text-secondary">
                     <ComboboxEmpty>Icone nao encontrado</ComboboxEmpty>
                     <ComboboxList className="flex flex-wrap gap-4">
-                      {iconsList.map((item) => {
-                        const Icon = item.component;
-
-                        if (item.name.includes(iconInput.toLowerCase()))
-                          return (
-                            <div
-                              key={item.name}
-                              onClick={() => setCurrentIcon(item.name)}
-                              className="w-full flex-1 flex justify-center"
-                            >
-                              <Tooltip>
-                                <TooltipTrigger>
-                                  <ComboboxItem
-                                    key={item.name}
-                                    value={item.name}
-                                    className="p-3 "
-                                  >
-                                    <Icon />
-                                  </ComboboxItem>
-                                </TooltipTrigger>
-                                <TooltipContent>{item.name}</TooltipContent>
-                              </Tooltip>
-                            </div>
-                          );
-                      })}
+                      {getIcons.map((item) => (
+                        <div
+                          key={item.name}
+                          onClick={() =>
+                            setValue("icon", item.name as FormData["icon"])
+                          }
+                          className="w-full flex-1 flex justify-center"
+                        >
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <ComboboxItem
+                                key={item.name}
+                                value={item.name}
+                                className="p-3"
+                              >
+                                <item.component />
+                              </ComboboxItem>
+                            </TooltipTrigger>
+                            <TooltipContent>{item.name}</TooltipContent>
+                          </Tooltip>
+                        </div>
+                      ))}
                     </ComboboxList>
                   </ComboboxContent>
                 </Combobox>
