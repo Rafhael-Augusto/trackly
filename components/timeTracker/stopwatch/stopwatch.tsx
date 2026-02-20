@@ -27,25 +27,37 @@ export function StopWatch() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 bg-secondary/5 p-4 rounded-xl ">
-      <div className="text-secondary font-bold text-5xl">
+    <div className="flex flex-col items-center gap-2 bg-secondary/5 p-2 rounded-xl ">
+      <div className="text-secondary font-bold text-3xl">
         <span>{formatTime(hours)}:</span>
         <span>{formatTime(minutes)}:</span>
         <span>{formatTime(seconds)}</span>
       </div>
 
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-2">
         <ButtonGroup>
-          <Button variant={"secondary"} onClick={() => handleClick()}>
+          <Button
+            className="h-8 w-16"
+            variant={"secondary"}
+            onClick={() => handleClick()}
+          >
             {isRunning ? "Pausar" : "Iniciar"}
           </Button>
-          <Button variant={"secondary"} onClick={() => reset()}>
+          <Button
+            className="h-8 w-16"
+            variant={"secondary"}
+            onClick={() => reset()}
+          >
             Reiniciar
           </Button>
         </ButtonGroup>
 
         {seconds > 0 && !isRunning && (
-          <Button onClick={() => handleRegister()} variant={"secondary"}>
+          <Button
+            className="h-8 w-16"
+            onClick={() => handleRegister()}
+            variant={"secondary"}
+          >
             Registrar
           </Button>
         )}

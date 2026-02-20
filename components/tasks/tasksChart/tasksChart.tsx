@@ -123,6 +123,7 @@ export function TasksChart({ props }: Props) {
 
   const newChartData = (data: WeeklyData[] | MonthlyData[]): UpdatedData[] => {
     const newDataArray = data.map((item) => {
+      console.log(data);
       const label = "day" in item ? item.day : item.month.slice(0, 3);
 
       return {

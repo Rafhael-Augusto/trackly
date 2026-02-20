@@ -14,16 +14,21 @@ export function TimeTracker({ draggable }: Props) {
   const { isOpen, setIsOpen } = useTimeTrackerContext();
 
   return (
-    <div>
+    <div className="w-full">
       {isOpen && (
-        <Card className={cn(draggable && "border-2")}>
+        <Card className={cn(draggable && "border-2 w-full")}>
           <CardHeader
-            className={cn(draggable && "flex items-center justify-between")}
+            className={cn(
+              draggable && "flex items-center justify-between h-6 ",
+            )}
           >
             <CardTitle>Time Tracker</CardTitle>
 
             {draggable && (
-              <Button className="p-0!" onClick={() => setIsOpen(false)}>
+              <Button
+                className="p-0! bg-transparent"
+                onClick={() => setIsOpen(false)}
+              >
                 <XIcon className="size-6" />
               </Button>
             )}

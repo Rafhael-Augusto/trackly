@@ -8,7 +8,7 @@ export function DraggableWrapper({ children }: { children: ReactNode }) {
 
   return (
     <Draggable nodeRef={nodeRef} bounds={"parent"}>
-      <div className="w-1/5 cursor-move" ref={nodeRef}>
+      <div className="w-1/5 cursor-move max-w-54" ref={nodeRef}>
         {children}
       </div>
     </Draggable>
