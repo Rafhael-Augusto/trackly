@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { Notification } from "@/app/generated/prisma/client";
+
 import { useMask } from "@react-input/mask";
 
 import { createNewNotification } from "./actions";
@@ -31,7 +33,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Notification } from "@/app/generated/prisma/client";
 
 type Props = {
   isOpen: boolean;
@@ -43,6 +44,28 @@ export function NotificationForm({ isOpen, setIsOpen, editingData }: Props) {
   const router = useRouter();
 
   const [isEnabled, setIsEnabled] = useState(true);
+
+  async function deleteNotification() {
+    await fetch("/api/notification", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  async function updateNotification(data: FormData) {
+    await fetch("/api/notification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id, ...data }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
 
   const hasData = () => {
     const data = {
@@ -71,33 +94,11 @@ export function NotificationForm({ isOpen, setIsOpen, editingData }: Props) {
     defaultValues: hasData(),
   });
 
-  async function deleteNotification() {
-    await fetch("/api/notification", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editingData?.id }),
-    });
-
-    router.refresh();
-  }
-
-  async function updateNotification(data: FormData) {
-    const res = await fetch("/api/notification", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editingData?.id, ...data }),
-    });
-
-    router.refresh();
-  }
-
   const { ref: registerRef, ...rest } = register("time");
 
   async function onSubmit(data: FormData) {
     if (editingData) {
       await updateNotification(data);
-
-      setIsOpen(false);
     } else {
       setIsEnabled(false);
       await createNewNotification(data);

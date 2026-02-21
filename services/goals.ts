@@ -24,3 +24,7 @@ export async function updateGoal(
 ): Promise<Goal> {
   return await prisma.goal.update({ where: { id }, data });
 }
+
+export async function deleteGoal(id: number): Promise<Goal> {
+  return await prisma.goal.delete({ where: { id } });
+}

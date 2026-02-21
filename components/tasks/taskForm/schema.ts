@@ -6,6 +6,7 @@ export const formSchema = z.object({
   description: z.string(),
   icon: z.enum(iconsName, "Icone invalido"),
   priority: z.enum(["HIGH", "LOW"], "Prioridade invalida"),
+  status: z.enum(["DONE", "STARTED", "PENDING"]),
 });
 
 export type FormData = z.infer<typeof formSchema>;

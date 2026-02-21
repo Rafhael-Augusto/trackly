@@ -1,20 +1,19 @@
 "use client";
 import { useMemo, useState } from "react";
 
+import { Task } from "@/app/generated/prisma/client";
+
+import { createNewTask } from "./actions";
+
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { iconsList, iconsMap } from "@/lib/icons";
+import { iconsList, iconsMap, iconsName } from "@/lib/icons";
 import { FormData, formSchema } from "./schema";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,7 +36,6 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
-import { createNewTask } from "./actions";
 import {
   Select,
   SelectContent,
@@ -46,14 +44,58 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  editingData?: Task;
 };
 
-export function TaskForm({ isOpen, setIsOpen }: Props) {
+export function TaskForm({ isOpen, setIsOpen, editingData }: Props) {
+  const router = useRouter();
+
   const [isEnabled, setIsEnabled] = useState(true);
+
+  async function deleteTask() {
+    await fetch("/api/task", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  async function updateTask(data: FormData) {
+    const res = await fetch("/api/task", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id, ...data }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  const hasData = () => {
+    const data: FormData = {
+      title: editingData?.title ? editingData.title : "",
+      description: editingData?.description ? editingData.description : "",
+      priority: editingData?.priority ? editingData.priority : "LOW",
+      icon: (editingData?.icon as keyof typeof iconsMap) ?? "prancheta",
+      status: editingData?.status ? editingData.status : "PENDING",
+    };
+
+    return data;
+  };
 
   const {
     register,
@@ -65,30 +107,27 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      icon: "prancheta",
-    },
+    defaultValues: hasData(),
   });
 
   const iconNameInput = watch("icon");
 
   async function onSubmit(data: FormData) {
-    setIsEnabled(false);
-    await createNewTask(data);
+    if (editingData) {
+      await updateTask(data);
+    } else {
+      setIsEnabled(false);
+      await createNewTask(data);
 
-    setIsOpen(false);
-    setIsEnabled(true);
+      setIsOpen(false);
+      setIsEnabled(true);
+    }
   }
 
   const onClose = () => {
-    setIsOpen(false);
+    reset();
 
-    reset({
-      title: "",
-      description: "",
-      icon: "prancheta",
-      priority: "LOW",
-    });
+    setIsOpen(false);
   };
 
   const getIcons = useMemo(() => {
@@ -115,9 +154,11 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
       <DialogContent className="bg-primary border-0 text-secondary">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Criar nova tarefa</DialogTitle>
+            <DialogTitle>
+              {editingData ? "Editar tarefa" : "Criar nova tarefa"}
+            </DialogTitle>
             <DialogDescription className="sr-only">
-              Crie uma nova tarefa
+              {editingData ? "Edite tarefa" : "Crie uma nova tarefa"}
             </DialogDescription>
           </DialogHeader>
           <FieldSet>
@@ -241,8 +282,18 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
                 type="submit"
                 disabled={isEnabled ? false : true}
               >
-                Criar
+                {editingData ? "Editar" : "Criar"}
               </Button>
+
+              {editingData && (
+                <Button
+                  onClick={() => deleteTask()}
+                  type="button"
+                  variant={"destructive"}
+                >
+                  Deletar
+                </Button>
+              )}
             </Field>
           </FieldSet>
         </form>

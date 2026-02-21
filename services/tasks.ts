@@ -164,3 +164,7 @@ export async function getMonthYearData() {
     dataMonthly: dataMonthly,
   };
 }
+
+export async function deleteTask(id: number): Promise<Task> {
+  return await prisma.task.delete({ where: { id } });
+}

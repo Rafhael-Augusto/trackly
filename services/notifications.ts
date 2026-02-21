@@ -25,6 +25,6 @@ export async function updateNotification(
   return await prisma.notification.update({ where: { id }, data });
 }
 
-export async function deleteNotification(id: number) {
+export async function deleteNotification(id: number): Promise<Notification> {
   return await prisma.notification.delete({ where: { id } });
 }

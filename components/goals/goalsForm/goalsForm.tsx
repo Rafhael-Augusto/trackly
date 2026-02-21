@@ -1,22 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { Goal } from "@/app/generated/prisma/client";
+
 import { cn } from "@/lib/utils";
+
+import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Controller, useForm } from "react-hook-form";
 
 import { format } from "date-fns";
 
 import { FormData, formSchema } from "./schema";
+import { createNewGoal } from "./actions";
 
 import { CalendarIcon } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,17 +34,59 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
-import { createNewGoal } from "./actions";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  editingData?: Goal;
 };
 
-export function GoalsForm({ isOpen, setIsOpen }: Props) {
+export function GoalsForm({ isOpen, setIsOpen, editingData }: Props) {
+  const router = useRouter();
+
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [isEnabled, setIsEnabled] = useState(true);
+
+  async function deleteGoal() {
+    await fetch("/api/goal", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  async function updateGoal(data: FormData) {
+    await fetch("/api/goal", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id, ...data }),
+    });
+
+    setIsOpen(false);
+    router.refresh();
+  }
+
+  const hasData = () => {
+    const data = {
+      title: editingData?.title ? editingData.title : "",
+      description: editingData?.description ? editingData.description : "",
+      deadline: editingData?.deadline
+        ? new Date(editingData.deadline)
+        : undefined,
+    };
+
+    return data;
+  };
 
   const {
     register,
@@ -53,15 +97,20 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: hasData(),
   });
 
   async function onSubmit(data: FormData) {
-    setIsEnabled(false);
-    await createNewGoal(data);
+    if (editingData) {
+      await updateGoal(data);
+    } else {
+      setIsEnabled(false);
+      await createNewGoal(data);
 
-    setIsOpen(false);
-    reset();
-    setIsEnabled(true);
+      setIsOpen(false);
+      reset();
+      setIsEnabled(true);
+    }
   }
 
   const handleDaySelect = (date: Date | undefined) => {
@@ -70,6 +119,16 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
       setCalendarOpen(false);
     }
   };
+
+  useEffect(() => {
+    if (editingData) {
+      reset({
+        title: editingData.title,
+        description: editingData.description,
+        deadline: new Date(editingData.deadline),
+      });
+    }
+  }, [editingData, reset]);
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
@@ -83,9 +142,11 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
       <DialogContent className="bg-primary border-0 text-secondary">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Criar nova meta</DialogTitle>
+            <DialogTitle>
+              {editingData ? "Editar meta" : "Criar nova meta"}
+            </DialogTitle>
             <DialogDescription className="sr-only">
-              Crie uma nova meta
+              {editingData ? "Edite meta" : "Crie uma nova meta"}
             </DialogDescription>
           </DialogHeader>
           <FieldSet>
@@ -164,8 +225,18 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
                 type="submit"
                 disabled={isEnabled ? false : true}
               >
-                Criar
+                {editingData ? "Editar" : "Criar"}
               </Button>
+
+              {editingData && (
+                <Button
+                  onClick={() => deleteGoal()}
+                  type="button"
+                  variant={"destructive"}
+                >
+                  Deletar
+                </Button>
+              )}
             </Field>
           </FieldSet>
         </form>
