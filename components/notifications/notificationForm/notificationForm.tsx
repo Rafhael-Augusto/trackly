@@ -1,21 +1,21 @@
 "use client";
 
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { useMask } from "@react-input/mask";
+
+import { createNewNotification } from "./actions";
 
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { FormData, formSchema } from "./schema";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import {
   Field,
@@ -24,16 +24,36 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
-import { createNewNotification } from "./actions";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Notification } from "@/app/generated/prisma/client";
 
 type Props = {
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  editingData?: Notification;
 };
 
-export function NotificationForm({ isOpen, setIsOpen }: Props) {
+export function NotificationForm({ isOpen, setIsOpen, editingData }: Props) {
+  const router = useRouter();
+
   const [isEnabled, setIsEnabled] = useState(true);
+
+  const hasData = () => {
+    const data = {
+      title: editingData?.title ? editingData.title : "",
+      description: editingData?.description ? editingData.description : "",
+      time: editingData?.time ? editingData.time : "",
+      active: editingData?.active && editingData.active,
+    };
+
+    return data;
+  };
 
   const inputRef = useMask({
     mask: "##:##",
@@ -44,24 +64,58 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: hasData(),
   });
+
+  async function deleteNotification() {
+    await fetch("/api/notification", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id }),
+    });
+
+    router.refresh();
+  }
+
+  async function updateNotification(data: FormData) {
+    const res = await fetch("/api/notification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingData?.id, ...data }),
+    });
+
+    router.refresh();
+  }
 
   const { ref: registerRef, ...rest } = register("time");
 
   async function onSubmit(data: FormData) {
-    setIsEnabled(false);
-    await createNewNotification(data);
+    if (editingData) {
+      await updateNotification(data);
 
-    setIsOpen(false);
-    reset();
-    setIsEnabled(true);
+      setIsOpen(false);
+    } else {
+      setIsEnabled(false);
+      await createNewNotification(data);
+
+      setIsOpen(false);
+      reset();
+      setIsEnabled(true);
+    }
   }
 
+  const onClose = () => {
+    reset();
+
+    setIsOpen(false);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
+    <Dialog open={isOpen} onOpenChange={() => onClose()} modal={false}>
       <div
         className={cn(
           "backdrop-blur-xs bg-black/50 h-screen w-screen top-0 left-0 z-0",
@@ -71,13 +125,19 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
       <DialogContent className="bg-primary border-0 text-secondary">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Criar nova notificacao</DialogTitle>
+            <DialogTitle>
+              {editingData
+                ? "Editar notificacao"
+                : "Criar uma nova notificacao"}
+            </DialogTitle>
             <DialogDescription className="sr-only">
-              Crie uma nova notificacao
+              {editingData
+                ? "Editar notificacao"
+                : "Criar uma nova notificacao"}
             </DialogDescription>
           </DialogHeader>
           <FieldSet>
-            <FieldGroup className="flex-row ">
+            <FieldGroup className="flex-row">
               <Field>
                 <FieldLabel htmlFor="notification-name">
                   Nome da notificacao
@@ -110,26 +170,54 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
               </Field>
             </FieldGroup>
 
-            <Field>
-              <FieldLabel htmlFor="notification-time">
-                Selecionar horario
-              </FieldLabel>
+            <FieldGroup className="flex-row">
+              <Field>
+                <FieldLabel htmlFor="notification-time">
+                  Selecionar horario
+                </FieldLabel>
 
-              <Input
-                {...rest}
-                ref={(node) => {
-                  registerRef(node);
-                  if (node) {
-                    inputRef.current = node;
-                  }
-                }}
-                id="notification-time"
-                autoComplete="off"
-                placeholder="Horario"
-                className="bg-secondary/5 p-2 rounded-xl border-0"
-              />
-              {errors.time && <FieldError>{errors.time.message}</FieldError>}
-            </Field>
+                <Input
+                  {...rest}
+                  ref={(node) => {
+                    registerRef(node);
+                    if (node) {
+                      inputRef.current = node;
+                    }
+                  }}
+                  id="notification-time"
+                  autoComplete="off"
+                  placeholder="Horario"
+                  className="bg-secondary/5 p-2 rounded-xl border-0"
+                />
+                {errors.time && <FieldError>{errors.time.message}</FieldError>}
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="notification-active">Ativo</FieldLabel>
+
+                <Controller
+                  name="active"
+                  control={control}
+                  defaultValue={true}
+                  render={({ field }) => (
+                    <div
+                      {...field}
+                      className="flex items-center p-2 rounded-xl w-12! bg-secondary/5"
+                    >
+                      <Switch
+                        id="notification-active"
+                        checked={field.value}
+                        onCheckedChange={(value) => field.onChange(value)}
+                      />
+                    </div>
+                  )}
+                />
+
+                {errors.active && (
+                  <FieldError>{errors.active.message}</FieldError>
+                )}
+              </Field>
+            </FieldGroup>
 
             <Field>
               <Button
@@ -137,8 +225,18 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
                 type="submit"
                 disabled={isEnabled ? false : true}
               >
-                Criar
+                {editingData ? "Editar" : "Criar"}
               </Button>
+
+              {editingData && (
+                <Button
+                  onClick={() => deleteNotification()}
+                  type="button"
+                  variant={"destructive"}
+                >
+                  Deletar
+                </Button>
+              )}
             </Field>
           </FieldSet>
         </form>

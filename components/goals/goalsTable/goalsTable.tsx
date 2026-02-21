@@ -98,7 +98,7 @@ export function GoalsTable({ data }: Props) {
                           {filter === "higher" ? (
                             <ChevronUpIcon className="size-5" />
                           ) : (
-                            <ChevronDownIcon />
+                            <ChevronDownIcon className="size-5" />
                           )}
                         </div>
                       </Button>
