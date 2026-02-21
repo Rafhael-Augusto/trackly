@@ -75,8 +75,8 @@ export function TaskForm({ isOpen, setIsOpen, editingData }: Props) {
   }
 
   async function updateTask(data: FormData) {
-    const res = await fetch("/api/task", {
-      method: "POST",
+    await fetch("/api/task", {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: editingData?.id, ...data }),
     });

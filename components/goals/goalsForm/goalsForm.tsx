@@ -67,7 +67,7 @@ export function GoalsForm({ isOpen, setIsOpen, editingData }: Props) {
 
   async function updateGoal(data: FormData) {
     await fetch("/api/goal", {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: editingData?.id, ...data }),
     });

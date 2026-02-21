@@ -58,7 +58,7 @@ export function NotificationForm({ isOpen, setIsOpen, editingData }: Props) {
 
   async function updateNotification(data: FormData) {
     await fetch("/api/notification", {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: editingData?.id, ...data }),
     });

@@ -10,7 +10,7 @@ export async function DELETE(req: Request) {
   return NextResponse.json({ message: "Meta deletada", data: deleted });
 }
 
-export async function POST(req: Request) {
+export async function PATCH(req: Request) {
   const body = await req.json();
   const { title, description, date, id } = body;
 
