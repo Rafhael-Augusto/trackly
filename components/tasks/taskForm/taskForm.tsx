@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { iconsList, iconsMap, iconsName } from "@/lib/icons";
+import { iconsList, iconsMap } from "@/lib/icons";
 import { FormData, formSchema } from "./schema";
 
 import {
@@ -46,7 +46,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LucideIcon } from "lucide-react";
 
 type Props = {
   isOpen: boolean;

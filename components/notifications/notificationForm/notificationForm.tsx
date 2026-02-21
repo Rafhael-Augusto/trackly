@@ -52,10 +52,12 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
   const { ref: registerRef, ...rest } = register("time");
 
   async function onSubmit(data: FormData) {
+    setIsEnabled(false);
     await createNewNotification(data);
 
     setIsOpen(false);
     reset();
+    setIsEnabled(true);
   }
 
   return (
