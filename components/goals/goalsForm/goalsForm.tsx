@@ -33,6 +33,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { createNewGoal } from "./actions";
+import { useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -40,22 +41,35 @@ type Props = {
 };
 
 export function GoalsForm({ isOpen, setIsOpen }: Props) {
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
+
   const {
     register,
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: FormData) {
+    setIsEnabled(false);
     await createNewGoal(data);
 
     setIsOpen(false);
     reset();
+    setIsEnabled(true);
   }
+
+  const handleDaySelect = (date: Date | undefined) => {
+    if (date) {
+      setValue("deadline", date);
+      setCalendarOpen(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} modal={false}>
@@ -113,7 +127,10 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
                 name="deadline"
                 control={control}
                 render={({ field }) => (
-                  <Popover>
+                  <Popover
+                    open={calendarOpen}
+                    onOpenChange={(value) => setCalendarOpen(value)}
+                  >
                     <PopoverTrigger asChild>
                       <Button className="bg-secondary/5">
                         <CalendarIcon />
@@ -129,7 +146,7 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={(date) => field.onChange(date)}
+                        onSelect={(date) => handleDaySelect(date)}
                       />
                     </PopoverContent>
                   </Popover>
@@ -142,7 +159,11 @@ export function GoalsForm({ isOpen, setIsOpen }: Props) {
             </Field>
 
             <Field>
-              <Button variant={"secondary"} type="submit">
+              <Button
+                variant={"secondary"}
+                type="submit"
+                disabled={isEnabled ? false : true}
+              >
                 Criar
               </Button>
             </Field>

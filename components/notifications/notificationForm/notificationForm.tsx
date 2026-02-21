@@ -25,6 +25,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { createNewNotification } from "./actions";
+import { useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -32,6 +33,8 @@ type Props = {
 };
 
 export function NotificationForm({ isOpen, setIsOpen }: Props) {
+  const [isEnabled, setIsEnabled] = useState(true);
+
   const inputRef = useMask({
     mask: "##:##",
     replacement: { "#": /\d/ },
@@ -127,7 +130,11 @@ export function NotificationForm({ isOpen, setIsOpen }: Props) {
             </Field>
 
             <Field>
-              <Button variant={"secondary"} type="submit">
+              <Button
+                variant={"secondary"}
+                type="submit"
+                disabled={isEnabled ? false : true}
+              >
                 Criar
               </Button>
             </Field>

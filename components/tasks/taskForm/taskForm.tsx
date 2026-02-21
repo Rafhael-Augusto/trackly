@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,6 +54,8 @@ type Props = {
 };
 
 export function TaskForm({ isOpen, setIsOpen }: Props) {
+  const [isEnabled, setIsEnabled] = useState(true);
+
   const {
     register,
     handleSubmit,
@@ -64,14 +66,19 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      icon: "prancheta",
+    },
   });
 
   const iconNameInput = watch("icon");
 
   async function onSubmit(data: FormData) {
+    setIsEnabled(false);
     await createNewTask(data);
 
     setIsOpen(false);
+    setIsEnabled(true);
   }
 
   const onClose = () => {
@@ -230,7 +237,11 @@ export function TaskForm({ isOpen, setIsOpen }: Props) {
             </FieldGroup>
 
             <Field>
-              <Button variant={"secondary"} type="submit">
+              <Button
+                variant={"secondary"}
+                type="submit"
+                disabled={isEnabled ? false : true}
+              >
                 Criar
               </Button>
             </Field>

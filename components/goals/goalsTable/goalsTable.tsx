@@ -1,6 +1,12 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
 import { Goal } from "@/app/generated/prisma/client";
 
-import { GoalIcon } from "lucide-react";
+import { format } from "date-fns";
+
+import { ChevronDownIcon, ChevronUpIcon, GoalIcon } from "lucide-react";
 
 import {
   Empty,
@@ -18,6 +24,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Button } from "@/components/ui/button";
+
 const head = [
   {
     label: "Meta",
@@ -34,7 +42,27 @@ type Props = {
   data: Goal[];
 };
 
+type Filter = "higher" | "lower";
+
 export function GoalsTable({ data }: Props) {
+  const [filter, setFilter] = useState<Filter>("higher");
+
+  const filterData = useMemo(() => {
+    if (filter === "higher") {
+      return data.sort((a, b) => b.deadline.getTime() - a.deadline.getTime());
+    } else {
+      return data.sort((a, b) => a.deadline.getTime() - b.deadline.getTime());
+    }
+  }, [filter, data]);
+
+  const handleFilterClick = () => {
+    if (filter === "higher") {
+      setFilter("lower");
+    } else {
+      setFilter("higher");
+    }
+  };
+
   return (
     <div>
       {data.length < 1 && (
@@ -59,20 +87,40 @@ export function GoalsTable({ data }: Props) {
                   key={item.label}
                   className="text-secondary font-bold"
                 >
-                  {item.label}
+                  <div className="flex items-center gap-2">
+                    {item.label}
+                    {item.label === "Deadline" && (
+                      <Button
+                        onClick={() => handleFilterClick()}
+                        className="bg-transparent"
+                      >
+                        <div className="flex  items-center justify-center h-8 w-8">
+                          {filter === "higher" ? (
+                            <ChevronUpIcon className="size-5" />
+                          ) : (
+                            <ChevronDownIcon />
+                          )}
+                        </div>
+                      </Button>
+                    )}
+                  </div>
                 </TableHead>
               ))}
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id} className="hover:bg-secondary/5">
-                <TableCell className="font-bold">{item.title}</TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>Data aqui</TableCell>
-              </TableRow>
-            ))}
+            {filterData.map((item) => {
+              const dateFormatted = format(item.deadline, "dd-MM-yyyy");
+
+              return (
+                <TableRow key={item.id} className="hover:bg-secondary/5">
+                  <TableCell className="font-bold">{item.title}</TableCell>
+                  <TableCell>{item.description}</TableCell>
+                  <TableCell>{dateFormatted}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       )}

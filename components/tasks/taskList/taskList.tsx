@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useDebounce } from "use-debounce";
 
@@ -65,19 +65,19 @@ export function TaskList({ filters, data }: Props) {
   const [query, setQuery] = useState("");
   const [debounceQuery] = useDebounce(query, 500);
 
-  const [filteredTasks, setFilteredTasks] = useState(data);
-
   const status = statusMap[selectedButton];
 
-  useEffect(() => {
+  const filteredTasks = useMemo(() => {
     let result = status ? data.filter((item) => item.status === status) : data;
 
     if (debounceQuery) {
-      result = result.filter((item) => item.title.includes(debounceQuery));
+      result = result.filter((item) =>
+        item.title.toLowerCase().includes(debounceQuery.toLowerCase()),
+      );
     }
 
-    setFilteredTasks(result);
-  }, [data, status, debounceQuery]);
+    return result;
+  }, [status, data, debounceQuery]);
 
   return (
     <div>
