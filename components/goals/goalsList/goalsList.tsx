@@ -30,11 +30,9 @@ export function GoalsList({ data }: Props) {
 
   const filteredTasks = useMemo(() => {
     if (debounceQuery) {
-      const result = data.filter((item) =>
+      return data.filter((item) =>
         item.title.toLowerCase().includes(debounceQuery.toLowerCase()),
       );
-
-      return result;
     } else {
       return data;
     }

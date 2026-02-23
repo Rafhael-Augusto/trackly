@@ -21,7 +21,9 @@ export function ThemeSwitch() {
         <Field className="flex-row items-center">
           <FieldContent>
             <FieldTitle>Mudar tema</FieldTitle>
-            <FieldDescription>Mudar para tema escuro ou claro</FieldDescription>
+            <FieldDescription>
+              Mudar o tema do site para tema escuro ou tema claro
+            </FieldDescription>
           </FieldContent>
 
           <Switch

@@ -2,7 +2,7 @@ import { NotificationSection } from "@/components/notifications/notificationSect
 
 export default function Notification() {
   return (
-    <div className="grid grid-cols-4 my-4">
+    <div className="grid grid-cols-4">
       <div className="col-span-3">
         <NotificationSection />
       </div>

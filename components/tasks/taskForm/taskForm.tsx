@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { iconsList, iconsMap, iconsName } from "@/lib/icons";
+import { iconsList, iconsMap } from "@/lib/icons";
 import { FormData, formSchema } from "./schema";
 
 import { Button } from "@/components/ui/button";

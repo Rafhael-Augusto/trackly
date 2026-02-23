@@ -25,14 +25,6 @@ export function MetricCard({ data }: Props) {
     <Card className="gap-2">
       <CardHeader>
         <CardTitle>{data.title}</CardTitle>
-        <CardAction>
-          <Button
-            variant={"secondary"}
-            className="bg-secondary text-primary h-8 w-9"
-          >
-            <ExternalLinkIcon />
-          </Button>
-        </CardAction>
       </CardHeader>
       <CardContent className="text-4xl font-bold">
         <p>{data.value}</p>
