@@ -58,25 +58,27 @@ export function NotificationList({ data }: Props) {
 
       <Card className="px-5">
         <CardHeader className="p-0">
-          <CardTitle className="flex items-center gap-8">
-            <p>Notificacoes</p>
-            <Button onClick={() => setIsOpen(true)} variant={"secondary"}>
-              Criar Notificacao
-            </Button>
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-8">
+              <p>Notificacoes</p>
+              <Button onClick={() => setIsOpen(true)} variant={"secondary"}>
+                Criar Notificacao
+              </Button>
+            </CardTitle>
 
-          <InputGroup className="w-1/5 bg-secondary/5 border-0">
-            <InputGroupInput
-              type="search"
-              placeholder="Pesquisar..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+            <InputGroup className="w-1/5 bg-secondary/5 border-0">
+              <InputGroupInput
+                type="search"
+                placeholder="Pesquisar..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
 
-            <InputGroupAddon align="inline-end">
-              <SearchIcon />
-            </InputGroupAddon>
-          </InputGroup>
+              <InputGroupAddon align="inline-end">
+                <SearchIcon />
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
         </CardHeader>
 
         <CardContent className="bg-secondary p-0 rounded-2xl">
